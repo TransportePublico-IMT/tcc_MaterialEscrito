@@ -1,0 +1,155 @@
+\def\Ano{\the\year}
+
+\titulo{Inteligência para Transporte Público}
+\local{São Caetano do Sul}
+\data{\Ano}
+\instituicao{Escola de Engenharia Mauá}
+\orientador{Tiago Sanches da Silva}
+\coorientador{}
+%{Murilo Zanini de Carvalho}
+
+\tipotrabalho{Trabalho de Conclusão de Curso}
+\newcommand{\IMT}{Instituto Mauá de Tecnologia}
+\newcommand{\CEUN}{Centro Universitário}
+\newcommand{\EscolaCompleto}{\imprimirinstituicao~do~\CEUN~do~\IMT}
+\newcommand{\TitutoGraduacao}{Engenheiro de Computação}
+\newcommand{\Curso}{Engenharia de Computação}
+\newcommand{\DataBanca}{29 de Abril de \Ano}
+\newcommand{\Estado}{SP}
+
+
+
+
+% palavras-chave
+\newcommand{\PalavraChaveA}{xxxxxxx}
+\newcommand{\PalavraChaveB}{xxxxxxx}
+\newcommand{\PalavraChaveC}{xxxxxxx}
+\newcommand{\PalavraChaveD}{xxxxxxx}
+\newcommand{\PalavraChaveE}{xxxxxxx}
+\newcommand{\PalavraChaveF}{xxxxxxx}
+
+% key-words
+\newcommand{\KeyWordA}{xxxxxxx}
+\newcommand{\KeyWordB}{xxxxxxx}
+\newcommand{\KeyWordC}{xxxxxxx}
+\newcommand{\KeyWordD}{xxxxxxx}
+\newcommand{\KeyWordE}{xxxxxxx}
+\newcommand{\KeyWordF}{xxxxxxx}
+
+% autores
+\newcommand{\FulanoASnome}{Araujo}
+\newcommand{\FulanoBSnome}{Novello}
+\newcommand{\FulanoCSnome}{Miraglia}
+\newcommand{\FulanoDSnome}{}
+
+\newcommand{\AFulano}{\FulanoASnome, Arthur Segura}
+\newcommand{\BFulano}{\FulanoBSnome, Luca Ezellner}
+\newcommand{\CFulano}{\FulanoCSnome, Lucas Marques}
+\newcommand{\DFulano}{}
+
+\newcommand{\FulanoA}{ Arthur Segura Ortiz Novello }
+\newcommand{\FulanoB}{ Luca Ezellner Miraglia }
+\newcommand{\FulanoC}{ Lucas Marques de Araujo }
+\newcommand{\FulanoD}{}
+
+\autor{\FulanoA \\ \FulanoB \\ \FulanoC \\ \FulanoD}
+
+
+
+
+% Banca Examinadora
+\newcommand{\Tratamento}[2]{
+Prof\ifthenelse{\equal{#2}{m}}{}{$^{\underline{a}}$}.~\ifthenelse{\equal{#1}{Me}}{\ifthenelse{\equal{#2}{m}}{Me.}{Ma.}}{\ifthenelse{\equal{#1}{Esp} \OR \equal{#1}{Dr}}{#1\ifthenelse{\equal{#2}{m}}{. }{$^{\underline{a}}$. }}}
+}
+
+%Nome completo dos Examinadores
+\newcommand{\ExaminadorA}{Murilo Zanini de Carvalho}
+\newcommand{\ExaminadorB}{Sergio Ribeiro Augusto}
+
+%Instituições dos Examinadores
+\newcommand{\InstituicaoExaminadorA}{\imprimirinstituicao}
+\newcommand{\InstituicaoExaminadorB}{\imprimirinstituicao}
+
+%Título dos Examinadores (Me, Esp ou Dr)
+\newcommand{\SexoOrientador}{m}
+\newcommand{\SexoCoorientador}{m}
+\newcommand{\SexoExaminadorA}{m}
+\newcommand{\SexoExaminadorB}{m}
+
+\newcommand{\TituloOrientador}{Me}
+\newcommand{\TituloCoorientador}{}
+\newcommand{\TituloExaminadorA}{Me}
+\newcommand{\TituloExaminadorB}{Dr}
+
+\newcommand{\TratamentoOrientador}  {\Tratamento{\TituloOrientador}{\SexoOrientador}}
+\newcommand{\TratamentoCoorientador}{\Tratamento{\TituloCoorientador}{\SexoCoorientador}}
+\newcommand{\TratamentoExaminadorA} {\Tratamento{\TituloExaminadorA}{\SexoExaminadorA}}
+\newcommand{\TratamentoExaminadorB} {\Tratamento{\TituloExaminadorB}{\SexoExaminadorB}}
+
+% alterando valores do ABNTEX2
+\renewcommand{\orientadorname}{\ifthenelse{\equal{\SexoOrientador}{m}}{Orientador}{Orientadora}}
+\renewcommand{\coorientadorname}{\ifthenelse{\equal{\SexoCoorientador}{m}}{Coorientador}{Coorientadora}}
+
+
+
+
+
+% Informações de dados para FOLHA DE ROSTO e FOLHA DE APROVAÇÃO
+\preambulo{\imprimirtipotrabalho~apresentado à~\EscolaCompleto~como requisito parcial para a obtenção de título de~\TitutoGraduacao. \newline Área de Concentração:~\Curso}
+
+\newcommand{\preambuloaprovado}{\imprimirtipotrabalho~aprovado como requisito parcial para a obtenção de título de~\TitutoGraduacao~pela \EscolaCompleto. \newline Área de Concentração:~\Curso}
+
+
+
+
+
+%Ficha Catalográfica
+%CDU - Classificação Decimal Universal
+%6 - Ciências Aplicadas. Medicina. Tecnologia.
+%2 - Engenharia. Tecnologia geral.
+%1 - Engenharia mecânica em geral. Tecnologia nuclear. Engenharia elétrica. Maquinaria
+%3 - Engenharia elétrica
+\newcommand{\CDU}{CDU 621.398}
+\newcommand{\Cutter}{T272}
+
+
+
+
+
+% tamanho da fonte das seções
+\renewcommand{\ABNTEXchapterfontsize}{\normalsize}
+\renewcommand{\ABNTEXsectionfontsize}{\normalsize}
+\renewcommand{\ABNTEXsubsectionfontsize}{\normalsize}
+\renewcommand{\ABNTEXsubsubsectionfontsize}{\normalsize}
+\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\normalsize}
+% tipo da fonte das seções
+\renewcommand{\ABNTEXchapterfont}{\normalfont\bfseries}
+\renewcommand{\ABNTEXsectionfont}{\normalfont\bfseries}
+\renewcommand{\ABNTEXsubsectionfont}{\normalfont\bfseries}
+\renewcommand{\ABNTEXsubsubsectionfont}{\normalfont\bfseries}
+\renewcommand{\ABNTEXsubsubsubsectionfont}{\normalfont\bfseries}
+\renewcommand{\legend}{\ABNTEXfontereduzida\centering}
+
+% Espaçamentos 
+% Margens
+\setlrmarginsandblock{3cm}{2cm}{*}
+\setulmarginsandblock{3cm}{2cm}{*}
+\checkandfixthelayout
+\setlength\afterchapskip{\onelineskip}
+\setlength{\parindent}{0 mm} % recuo
+
+
+
+
+% Criando Quadros
+\newcounter{quadroCount}
+\setcounter{quadroCount}{0}
+\newenvironment{quadro}[2] % #1 caption e #2 label
+{% This is the begin code
+  \refstepcounter{quadroCount}
+  \centering
+  {Quadro} \arabic{quadroCount}: #2\\ 
+	\label{#1}
+}
+{% This is the end code
+}

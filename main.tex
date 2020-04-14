@@ -1,0 +1,133 @@
+% ------------------------------------------------------------------------
+% Trabalho de Conclusão de Curso CEUN-IMT
+% ------------------------------------------------------------------------
+
+\title{TCC - Inteligência para transporte público}
+
+\documentclass[
+	% -- opções da classe memoir --
+	12pt,							% tamanho da fonte
+	a4paper,					% tamanho do papel. 
+	openright,				% capítulos começam em pág ímpar (insere página vazia caso preciso)
+	oneside,					% só frente 
+	%ou twoside,   		% frente e verso
+	% -- opções do pacote babel --
+	english,					% idioma adicional para hifenização
+	brazil						% o último idioma é o principal do documento
+	]{abntex2}
+
+%% pacotes utilizados
+\usepackage[brazil]{babel}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage[table]{xcolor}
+
+\usepackage[utf8]{inputenc}			% Codificacao do documento (conversão automática dos acentos)
+\usepackage[T1]{fontenc}				% Selecao de codigos de fonte.
+\usepackage{times}							% Usa a fonte Times	
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{lastpage}						% Usado pela Ficha catalográfica
+\usepackage{fancybox}
+%Para não definir footnote
+\let\footruleskip\undefined
+\usepackage{fancyhdr}
+\usepackage{lscape}
+\usepackage{setspace}
+\usepackage{textcomp}						% usar o TM  \texttrademark
+\usepackage[pdftex]{graphicx}
+\usepackage{subcaption}
+\setlength{\belowcaptionskip}{15pt plus 3pt minus 2pt} % Chosen fairly arbitrarily
+
+\usepackage{color}							% Controle das cores
+\usepackage{microtype}					% para melhorias de justificação
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{pdfpages}						% incluir outro pdf como anexo
+\usepackage{hyperref} 					% controla a formação do índice
+\usepackage{booktabs}						% tabelas com linhas variáveis
+\usepackage{dirtree}						% árvore de diretórios do apêndice com conteúdo do CD
+
+% Configurações
+\include{variaveis}
+
+% Bibliografia
+\usepackage[brazilian,hyperpageref]{backref}		% Paginas com as citações na bibl
+\usepackage[
+  alf,
+	abnt-emphasize=bf,
+	abnt-url-package=hyperref,
+	abnt-etal-list=0, % 6023 - mostra todos os nomes nas referências
+	abnt-etal-cite=3, % 10520 - número de autores antes de ser et al
+	recuo=0.0cm %0.5cm
+]{abntex2cite}										% Citações padrão ABNT
+
+
+% Configurações o PDF 
+\makeatletter
+	\hypersetup{
+	pdftitle={\imprimirtitulo}, 
+	pdfauthor={{\imprimirautor~e~\imprimirorientador}},
+	pdfsubject={\imprimirpreambulo},
+	pdfkeywords={\PalavraChaveA\\}{\PalavraChaveB\\}{\PalavraChaveC\\}{\PalavraChaveD\\}{\PalavraChaveE},
+	colorlinks=true,						% não desenha o retângulo em referências
+	linkcolor=black, 						% cor das referências cruzadas
+	citecolor=black, 						% cor das citações - 10520
+	filecolor=black, 						% cor dos arquivos
+	urlcolor=black, 						% cor dos sites
+	bookmarksdepth=4
+}
+\makeatother
+
+
+
+% Início do documento
+\begin{document}
+
+		% Elementos pré-textuais
+    \pretextual
+		\include{capa}
+		\include{folha_de_rosto}			
+		\include{ficha_catalografica}
+		\include{folha_de_aprovacao}		
+		\include{dedicatoria}
+		\include{agradecimentos}
+		\include{epigrafe}
+		\include{resumo}
+		\include{abstract}
+		\listoffigures*
+			\cleardoublepage
+		\listoftables*
+			\cleardoublepage
+		\include{siglas}
+		\include{simbolos}
+		\pdfbookmark[0]{\contentsname}{toc}
+		\tableofcontents*
+			\cleardoublepage
+
+		% Elementos textuais
+		\textual
+		\include{cap1} \cleardoublepage % quando usa twoside
+		\include{cap2} \cleardoublepage
+		\include{cap3} \cleardoublepage
+		\include{cap4} \cleardoublepage
+		\include{cap5} \cleardoublepage
+	
+		
+
+		% Apêndices
+		%\begin{apendicesenv}	
+        	%\partapendices
+			%\include{apendicea}
+			
+%			\include{apendicec}
+		%\end{apendicesenv}
+		
+		% Anexos
+		%\begin{anexosenv}
+			%\partanexos % Imprime uma página indicando o início dos anexos
+		%\end{anexosenv}
+\nocite{}
+\bibliography{referencias}	
+\end{document}

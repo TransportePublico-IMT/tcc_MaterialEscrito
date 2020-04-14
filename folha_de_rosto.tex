@@ -1,0 +1,47 @@
+\makeatletter
+\renewcommand{\folhaderostocontent}{
+	\begin{center}
+		{\ABNTEXchapterfont \textbf{\imprimirautor}}
+
+		\vspace*{\fill}\vspace*{\fill}
+
+		\ABNTEXchapterfont \textbf{\imprimirtitulo}
+
+		\vspace*{\fill}
+		
+		\normalfont
+
+		\begin{flushright}
+			\abntex@ifnotempty{\imprimirpreambulo}{
+				\hspace{.45\textwidth}
+	
+				\begin{minipage}{.55\textwidth}
+					\SingleSpacing
+					\imprimirpreambulo
+					
+					\vspace*{.7cm}
+
+					{\imprimirorientadorRotulo~\imprimirorientador\par}
+					\abntex@ifnotempty{\imprimircoorientador}{
+						{\imprimircoorientadorRotulo~\imprimircoorientador}
+					}
+				\end{minipage}
+	
+				\vspace*{\fill}
+			}
+		\end{flushright}
+
+		\vspace*{\fill}
+
+		{\imprimirlocal}
+		\par
+		{\imprimirdata}
+	\end{center}
+}
+\makeatother
+
+\imprimirfolhaderosto*
+%
+
+
+% deixar essas duas linhas de espaço!!!!

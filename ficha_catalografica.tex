@@ -1,0 +1,93 @@
+\begin{fichacatalografica}
+	%\includepdf{Ficha_catalografica.pdf}
+% ou
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcounter{cont}
+\setcounter{cont}{1}
+
+\newif\ifnAlunosTresMais
+\ifthenelse{\equal{\FulanoDSnome}{}}{\nAlunosTresMaisfalse}{\nAlunosTresMaistrue}
+
+%\newif\ifnAlunosTresMais
+%\ifthenelse{\equal{\FulanoDSnome}{}}{\nAlunosTresMaisfalse}{\nAlunosTresMaistrue}
+
+\vspace*{\fill}
+\ifnAlunosTresMais
+	\begin{table}[!b]
+  		\setlength{\arrayrulewidth}{0.75pt}
+		\begin{tabular}{|L{1cm}L{11.5cm}|}
+			\hline
+			~ & ~ \\
+			{\fontsize{9pt}{9pt}\selectfont \Cutter} & 
+			{\fontsize{9pt}{9pt}\selectfont \hspace{0.37cm}
+			\imprimirtitulo\ / \FulanoA...[et al.] - \local {} : CEUN-IMT, \imprimirdata.}\\
+			~ & \hspace{0.37cm}
+			{\fontsize{9pt}{9pt}\selectfont \pageref{LastPage} p.}\\
+			~ & ~ \\
+			~ & \hspace{0.37cm}
+			{\fontsize{9pt}{1cm}\selectfont \imprimirtipotrabalho~- \EscolaCompleto, \local,~\Estado,~\imprimirdata.}\\
+			~ & ~ \\
+			~ & ~ \\
+			~ & \hspace{0.37cm}
+			{\fontsize{9pt}{1cm}\selectfont \imprimirorientadorRotulo:~\imprimirorientador}\\	
+			~ & ~ \\
+			~ & \hspace{0.37cm}
+			{\fontsize{9pt}{1cm}\selectfont 
+			\ifthenelse{\equal{\PalavraChaveA}{}}{}{1. \PalavraChaveA} 
+			\ifthenelse{\equal{\PalavraChaveB}{}}{}{2. \PalavraChaveB} 
+			\ifthenelse{\equal{\PalavraChaveC}{}}{}{3. \PalavraChaveC} 
+			\ifthenelse{\equal{\PalavraChaveD}{}}{}{4. \PalavraChaveD} 
+			\ifthenelse{\equal{\PalavraChaveE}{}}{}{5. \PalavraChaveE} 
+     	\ifthenelse{\equal{\FulanoASnome}{}}{}{\Roman{cont}. \AFulano.\setcounter{cont}{\value{cont}+1}} 
+     	\ifthenelse{\equal{\FulanoBSnome}{}}{}{\Roman{cont}. \BFulano.\setcounter{cont}{\value{cont}+1}} 
+     	\ifthenelse{\equal{\FulanoCSnome}{}}{}{\Roman{cont}. \CFulano.\setcounter{cont}{\value{cont}+1}} 
+     	\ifthenelse{\equal{\FulanoDSnome}{}}{}{\Roman{cont}. \DFulano.\setcounter{cont}{\value{cont}+1}} 
+     	\Roman{cont}. \IMT. \CEUN. \imprimirinstituicao. \setcounter{cont}{\value{cont}+1}
+     	\Roman{cont}. Tí­tulo.}	\\
+			~ & ~ \\
+			~ & \hspace{9cm}
+			{\fontsize{9pt}{1cm}\selectfont \CDU} \\
+ 	 		\hline
+  		\end{tabular}
+	\end{table}
+\else
+	\begin{table}[!b]
+	\centering
+  		\setlength{\arrayrulewidth}{0.75pt}
+		\begin{tabular}{|L{1cm}L{11.5cm}|}
+			\hline
+			~ & ~ \\
+% 			{\fontsize{9pt}{9pt}\selectfont \Cutter} 
+            & 
+			{\fontsize{9pt}{9pt}\selectfont \AFulano}\\
+			~ & {\fontsize{9pt}{9pt}\selectfont \hspace{0.37cm}
+			\imprimirtitulo\ / \ifthenelse{\equal{\FulanoASnome}{}}{}{\FulanoA}\ifthenelse{\equal{\FulanoBSnome}{}}{}{, \FulanoB}\ifthenelse{\equal{\FulanoCSnome}{}}{}{, \FulanoC}. - \imprimirlocal: CEUN-IMT, \imprimirdata.}\\
+			~ & {\fontsize{9pt}{9pt}\selectfont \hspace{0.37cm} \pageref{LastPage} p.}\\
+			~ & ~ \\
+			~ & \hspace{0.37cm}
+			{\fontsize{9pt}{1cm}\selectfont \imprimirtipotrabalho~-~\EscolaCompleto, \imprimirlocal, \Estado, \imprimirdata.}\\
+			~ & ~ \\
+			~ & ~ \\
+			~ & \hspace{0.37cm}
+			{\fontsize{9pt}{1cm}\selectfont \imprimirorientadorRotulo:~Prof. Me.~\imprimirorientador}\\	
+			~ & ~ \\
+			~ & \hspace{0.37cm}
+			{\fontsize{9pt}{1cm}\selectfont 
+			\ifthenelse{\equal{\PalavraChaveA}{}}{}{1. \PalavraChaveA}. 
+			\ifthenelse{\equal{\PalavraChaveB}{}}{}{2. \PalavraChaveB}. 
+			\ifthenelse{\equal{\PalavraChaveC}{}}{}{3. \PalavraChaveC}. 
+			\ifthenelse{\equal{\PalavraChaveD}{}}{}{4. \PalavraChaveD}. 
+     	\ifthenelse{\equal{\FulanoBSnome}{}}{}{\Roman{cont}. \BFulano.\setcounter{cont}{\value{cont}+1}} 
+     	\ifthenelse{\equal{\FulanoCSnome}{}}{}{\Roman{cont}. \CFulano.\setcounter{cont}{\value{cont}+1}} 
+     	\Roman{cont}. \IMT. \imprimirinstituicao. \setcounter{cont}{\value{cont}+1}
+     	\Roman{cont}. Tí­tulo.}	\\
+			~ & ~ \\
+% 			~ & \hspace{9cm}
+% 			{\fontsize{9pt}{1cm}\selectfont \CDU} \\			
+ 	 		\hline
+  		\end{tabular}
+	\end{table}
+\fi
+
+\end{fichacatalografica}

@@ -1,0 +1,49 @@
+\makeatletter
+\begin{folhadeaprovacao}
+	\begin{center}
+		{\ABNTEXchapterfont \textbf{\imprimirautor}}
+		
+		\vspace*{\fill}\vspace*{\fill}
+		
+		\begin{center}
+			\ABNTEXchapterfont \textbf{\imprimirtitulo}
+		\end{center}
+
+		\vspace*{\fill}
+		\hspace{.45\textwidth}
+
+		\normalfont
+
+		\begin{flushright}
+			\begin{minipage}{.55\textwidth}
+				\preambuloaprovado
+			\end{minipage}%
+		\end{flushright}
+
+		\vspace*{\fill}
+	\end{center}
+		
+	\normalfont
+
+	Banca examinadora:
+
+	\begin{center}
+		\TratamentoOrientador~\imprimirorientador \\ \imprimirorientadorRotulo \\
+		\vspace*{\fill}
+		\abntex@ifnotempty{\imprimircoorientador}{
+			\TratamentoCoorientador~\imprimircoorientador \\ \imprimircoorientadorRotulo \\ \imprimirinstituicao\\
+			\vspace*{\fill}
+		}
+		\TratamentoExaminadorA~\ExaminadorA \\ Avaliador\\
+		\vspace*{\fill}
+		\TratamentoExaminadorB~\ExaminadorB \\ Avaliador\\
+		\vspace*{\fill}
+	\end{center}
+	
+	\begin{center}
+		\vspace*{0.5cm}
+
+		{\imprimirlocal}, \DataBanca.
+	\end{center}
+\end{folhadeaprovacao}
+\makeatother
