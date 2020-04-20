@@ -39,7 +39,6 @@
 \usepackage[pdftex]{graphicx}
 \usepackage{subcaption}
 \setlength{\belowcaptionskip}{15pt plus 3pt minus 2pt} % Chosen fairly arbitrarily
-
 \usepackage{color}							% Controle das cores
 \usepackage{microtype}					% para melhorias de justificação
 \usepackage{multirow}
@@ -85,6 +84,7 @@
 % Início do documento
 \begin{document}
 
+
 		% Elementos pré-textuais
     \pretextual
 		\include{capa}
@@ -108,7 +108,10 @@
 
 		% Elementos textuais
 		\textual
-		\include{cap1} \cleardoublepage % quando usa twoside
+		\setlength{\parindent}{7ex}
+		\setlength{\parskip}{1em}
+		%\setlength{\baselineskip}{1.5cm}
+		\include{cap1} \cleardoublepage  % quando usa twoside
 		\include{cap2} \cleardoublepage
 		\include{cap3} \cleardoublepage
 		\include{cap4} \cleardoublepage
