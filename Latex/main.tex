@@ -7,9 +7,9 @@
 \documentclass[
 	% -- opções da classe memoir --
 	12pt,							% tamanho da fonte
-	a4paper,					% tamanho do papel. 
+	a4paper,					% tamanho do papel.
 	openright,				% capítulos começam em pág ímpar (insere página vazia caso preciso)
-	oneside,					% só frente 
+	oneside,					% só frente
 	%ou twoside,   		% frente e verso
 	% -- opções do pacote babel --
 	english,					% idioma adicional para hifenização
@@ -25,7 +25,7 @@
 
 \usepackage[utf8]{inputenc}			% Codificacao do documento (conversão automática dos acentos)
 \usepackage[T1]{fontenc}				% Selecao de codigos de fonte.
-\usepackage{times}							% Usa a fonte Times	
+\usepackage{times}							% Usa a fonte Times
 \usepackage{latexsym}
 \usepackage{amsmath}
 \usepackage{lastpage}						% Usado pela Ficha catalográfica
@@ -64,10 +64,10 @@
 ]{abntex2cite}										% Citações padrão ABNT
 
 
-% Configurações o PDF 
+% Configurações o PDF
 \makeatletter
 	\hypersetup{
-	pdftitle={\imprimirtitulo}, 
+	pdftitle={\imprimirtitulo},
 	pdfauthor={{\imprimirautor~e~\imprimirorientador}},
 	pdfsubject={\imprimirpreambulo},
 	pdfkeywords={\PalavraChaveA\\}{\PalavraChaveB\\}{\PalavraChaveC\\}{\PalavraChaveD\\}{\PalavraChaveE},
@@ -89,9 +89,9 @@
 		% Elementos pré-textuais
     \pretextual
 		\include{capa}
-		\include{folha_de_rosto}			
+		\include{folha_de_rosto}
 		\include{ficha_catalografica}
-		\include{folha_de_aprovacao}		
+		\include{folha_de_aprovacao}
 		\include{dedicatoria}
 		\include{agradecimentos}
 		\include{epigrafe}
@@ -117,21 +117,21 @@
 		\include{cap3} \cleardoublepage
 		\include{cap4} \cleardoublepage
 		\include{cap5} \cleardoublepage
-	
-		
+
+
 
 		% Apêndices
-		%\begin{apendicesenv}	
+		%\begin{apendicesenv}
         	%\partapendices
 			%\include{apendicea}
-			
+
 %			\include{apendicec}
 		%\end{apendicesenv}
-		
+
 		% Anexos
 		%\begin{anexosenv}
 			%\partanexos % Imprime uma página indicando o início dos anexos
 		%\end{anexosenv}
 \nocite{}
-\bibliography{referencias}	
+\bibliography{referencias}
 \end{document}
