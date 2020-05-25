@@ -2,12 +2,16 @@
 \label{Cap:MateriaisMetodos}
 
 % Capítulo 3: Materiais e Métodos (ou Metodologia)
+\begin{comment}
 \indent
 \par Este capítulo aborda os materiais e métodos utilizados no projeto, contendo maiores detalhes sobre algoritmos, tecnologias e estratégias empregadas na solução.
 
 \section{Modelo da solução}
+\end{comment}
+
 \indent
-\par A fim de solucionar o problema identificado, foram definidos métodos e estratégias com o objetivo de criar um fluxo de trabalho. As figuras \ref{diagramaDeBlocos} e \ref{DiagramaDeBlocosIcones} fornecem um diagrama ilustrativo e simplificado da solução proposta.
+\par A fim de solucionar o problema identificado, foram definidos métodos e estratégias com o objetivo de criar um fluxo de trabalho. A figura \ref{DiagramaDeBlocosIcones} fornece um diagrama ilustrativo e simplificado da solução proposta.
+\begin{comment}
 \subsection{Diagramas da solução}
 
 \begin{figure}[H]
@@ -17,6 +21,7 @@
     \caption*{Fonte: Arquivo dos autores (2020)}
     \label{diagramaDeBlocos}
 \end{figure}
+\end{comment}
 
 \begin{figure}[H]
     \centering
@@ -25,6 +30,9 @@
     \caption*{Fonte: Arquivo dos autores (2020)}
     \label{DiagramaDeBlocosIcones}
 \end{figure}
+
+\indent
+\par Primeiramente alguns dados dos ônibus como por exemplo velocidade, tempo de parada, linhas, posição dos veículos seriam coletados juntamente com imagens do interior dos veículos, que passariam por um algoritmo de reconhecimento para identificar a lotação dos mesmos. Paralelamente, informações obtidas por meio de API's externas enriqueceriam o conjunto de dados, que por sua vez passaria por um tratamento e um treinamento. Após esse processo algumas informações serão direcionadas diretamente para o painel de controle enquanto outras passarão pela inteligencia artificial para depois serem colocadas no dashboard.
 
 \section{Python}
 \indent
