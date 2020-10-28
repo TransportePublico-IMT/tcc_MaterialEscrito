@@ -22,14 +22,14 @@
 \usepackage{tabularx}
 \usepackage{float}
 \usepackage[table]{xcolor}
-
-\usepackage[utf8]{inputenc}			% Codificacao do documento (conversão automática dos acentos)
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
 \usepackage[T1]{fontenc}				% Selecao de codigos de fonte.
 \usepackage{times}							% Usa a fonte Times
 \usepackage{latexsym}
 \usepackage{amsmath}
 \usepackage{lastpage}						% Usado pela Ficha catalográfica
 \usepackage{fancybox}
+\usepackage{listings,xcolor}
 %Para não definir footnote
 \let\footruleskip\undefined
 \usepackage{fancyhdr}
@@ -84,7 +84,14 @@
 
 % Início do documento
 \begin{document}
-
+	\lstset{
+		string=[s]{"}{"},
+		stringstyle=\color{red},
+		comment=[l]{:},
+		commentstyle=\color{black},
+		basicstyle=\tiny,
+		% backgroundcolor=\color{lightgray},
+	}
 
 		% Elementos pré-textuais
     \pretextual
