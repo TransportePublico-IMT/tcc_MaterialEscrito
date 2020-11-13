@@ -106,10 +106,10 @@
 		\include{abstract}
 		\listoffigures*
 			\cleardoublepage
-		\listoftables*
-			\cleardoublepage
+		% \listoftables*
+		% 	\cleardoublepage
 		\include{siglas}
-		\include{simbolos}
+		% \include{simbolos}
 		\pdfbookmark[0]{\contentsname}{toc}
 		\tableofcontents*
 			\cleardoublepage
@@ -126,12 +126,11 @@
 		\include{cap5} \cleardoublepage
 
 		% Apêndices
-		%\begin{apendicesenv}
-        	%\partapendices
-			%\include{apendicea}
-
-%			\include{apendicec}
-		%\end{apendicesenv}
+		\begin{apendicesenv}
+        	\partapendices
+			\include{apendicea}
+			% \include{apendicec}
+		\end{apendicesenv}
 
 		% Anexos
 		%\begin{anexosenv}
