@@ -1,808 +1,239 @@
-\chapter{Código Fonte Arduino - Emissor}
+\chapter{\textit{ENDPOINTS}}
  \label{app:apendiceA}
- \definecolor{verdeescuro}{rgb}{0.0,0.3,0.0}
-\definecolor{begecodigo1}{rgb}{0.92,0.92,0.79}
-\definecolor{begecodigo2}{rgb}{0.84,0.84,0.72}
- 
-     	\rowcolors{0}{begecodigo1}{begecodigo2}
-        \newcolumntype{R}{>{\raggedright\arraybackslash}}
-
-    
- %\begin{longtable}[l]{| l |}
-%\begin{longtable}[l]{ |l| }
- \begin{longtable}{Rp{15cm}}
- \hline
-
-// Biblioteca com as funcoes basicas do MPU6050 \\
-\#include <MPU6050.h> \\
-\\
-// Criando uma referencia ao tipo do MPU6050 \\
-MPU6050 mpu; \\
-\\
-int bootou = 0; \\
-\\
-// Timers \\
-unsigned long timer = 0; \\
-float timeStep = 0.05; \\
-\\
-// Pitch(y), Roll(x) and Yaw(z) values \\
-float pitch = 0; \\
-float roll = 0; \\
-float yaw = 0; \\
-\\
-// Biblioteca de serial em outras portas \\
-\#include <SoftwareSerial.h> \\
-\\
-int bluetoothTx = 2; \\
-int bluetoothRx = 3; \\
-\\
-// Cria objeto para I2C (Definido na biblioteca MPU6050) \\
-//SoftWire Wire = SoftWire(); \\
-\\
-// Cria objeto para outra serial \\
-SoftwareSerial bluetooth(bluetoothTx,bluetoothRx); \\
-\\
-int incomingByte = 0; \\
-int desligaConfig = 0; \\
-\\
-// Caso o pino A0 estiver desligado e 0x68, \\
-// caso estiver ligado vira 0x69; \\
-const int MPU = 0x68; \\
-\\
-// Obtem informações acelerometro, giroscopio e temperatura \\
-int AcX,AcY,AcZ,Tmp, GyX,GyY,GyZ; \\
-\\
-void bootando()\{ \\
-\qquad  // \#\#\#\# Definicoes Giroscopio \#\#\#\# \\
-\\
- \qquad // Inicializando  MPU6050 \\
- \qquad while(\!mpu.begin(MPU6050\_SCALE\_2000DPS, MPU6050\_RANGE\_16G)) \\
- \qquad \{ \\
-  \qquad \qquad  Serial.println("Nao foi possivel se comunicar com MPU6050"); \\
-   \qquad \qquad delay(500); \\
-  \qquad \} \\
-  \\
-  \qquad // Calibrando giroscopio \\
-  \qquad mpu.calibrateGyro(); \\
-\\
-  \qquad Serial.println("Recalibrado");\\
-\} \\
-\\
-void setup() \{ \\
-\qquad  // Inicializa a comunicacao Serial com baud Rate 9600bps \\
-\qquad  Serial.begin(57600); \\
-  \\
-\qquad  // \#\#\#\# Definicoes Giroscopio \#\#\#\# \\
-  \\
- \qquad // Initialize MPU6050\\
- \qquad while(\!mpu.begin(MPU6050\_SCALE\_2000DPS, MPU6050\_RANGE\_2G))\\
- \qquad \{\\
-   \qquad \qquad Serial.println("Nao foi possivel se comunicar com MPU6050");\\
-   \qquad \qquad delay(500);\\
-  \qquad \}\\
-  \\
-  \qquad // Calibrar Giroscopio\\
-  \qquad mpu.calibrateGyro();\\
-  \qquad // \#\#\#\# Fim definicoes Giroscopio \#\#\#\#\\
-  \\
- \qquad // \#\#\# Inicio definicoes bluetooth \#\#\#  \\
-  \qquad // Inicia a comunicacao com módulo Bluetooth com uma taxa de 57600 bps \\
-  \qquad bluetooth.begin(57600); \\
-  \qquad // \#\#\# Fim definicoes bluetooth \#\#\# \\
-\}
-\\
-void loop() \{ \\
- \qquad  /* \\
- \qquad  * Obtem valores do ADC e proveniente de outros protocolos \\
- \qquad  * (I2C) para montar uma string contendo os dados e separados por : \\
- \qquad  * e encerrado por ; \\
- \qquad  * modelo: \\
- \qquad  *  \\
- \qquad  * posX:posY:posZ:rotX:RotY,RotZ:Dedo1:Dedo2:Dedo3:Dedo4:Dedo5; \\
- \qquad  */ \\
-\\
- \qquad  if(bootou == 0)\{ \\
- \qquad \qquad     bootando(); \\
-  \qquad \qquad     bootou = 1; \\
-  \qquad \} \\
-   \\
-  \qquad // Pega o tempo para o calculo do giroscopio \\
-  \qquad timer = millis(); \\
-\\
-\qquad // Le os valores normalizados \\
-\qquad  Vector norm = mpu.readNormalizeGyro(); \\
-\\
-\qquad  // Calcula Pitch, Roll and Yaw \\
-\qquad  pitch = pitch + norm.YAxis * timeStep; \\
-\qquad  roll = roll + norm.XAxis * timeStep; \\
-\qquad  yaw = yaw + norm.ZAxis * timeStep; \\
-\\
-\qquad  // Limitando eixos ate 360 \\
-\qquad  // Limitando Pitch \\
-\qquad  if(pitch < 0)\{ pitch =360; \} \\
-\qquad  else if(pitch > 360)\{ pitch =0; \} \\
-\\
-\qquad  // Limitando Roll \\
-\qquad  if(roll < 0)\{ roll =360; \} \\
-\qquad  else if(roll > 360)\{ roll =0; \}  \\
-\qquad  // Limitando Yaw \\
-\qquad  if(yaw < 0)\{ yaw =360; \} \\
-\qquad  else if(yaw > 360)\{ yaw =0; \}  \\
-\\
-\qquad  // Transformando em valores de 0 a 1023 \\
-\qquad  // Transformando roll \\
-\qquad  int rollT = (int)(roll * 2.84166); \\
-\qquad  // Transformando pitch \\
-\qquad  int pitchT = (int)(pitch * 2.84166); \\
-\qquad  // Transformando yaw \\
-\qquad  int yawT = (int)(yaw * 2.84166); \\ 
-  \\
-\qquad  // Le valores dos ADC's \\
-\qquad  // Le posicoes \\
-\qquad  int readX = analogRead(0); \\
-\qquad  int readY = analogRead(1); \\
-\qquad  int readZ = analogRead(2);  \\
-\\
-\qquad  // Le flex sensors para os dedos \\
-\qquad  int dedo1 = analogRead(3); \\
-\qquad  int dedo2 = analogRead(4); \\
-\qquad  int dedo3 = analogRead(5); \\
-\qquad  int dedo4 = analogRead(6); \\
-\qquad  int dedo5 = analogRead(7); \\
-\\
-\qquad  char Data[150]; \\
-\qquad  strcpy(Data,""); \\
-\\
-\qquad // Posicao X,Y,Z \\
-\qquad  // X \\
-\qquad  char valX[5]; \\
-\qquad  sprintf(valX, "\%d", readX); \\
-\qquad  strcat(Data, valX); \\
-\\
-\qquad  // Y \\
-\qquad  strcat(Data,":"); \\
-\qquad  char valY[5]; \\
-\qquad  sprintf(valY, "\%d", readY);   \\
-\qquad  strcat(Data, valY); \\
-\\
-\qquad  // Z  \\
-\qquad  strcat(Data,":"); \\
-\qquad  char valZ[5]; \\
-\qquad  sprintf(valZ, "\%d", readZ);  \\
-\qquad  strcat(Data, valZ);  \\
-\qquad // strcat(Data,"0");\\
-\\
-\qquad // Rotacao X,Y,Z \\
-\qquad  // rotX   \\
-\qquad  strcat(Data,":"); \\
-\qquad  char rotX[5];  \\
-\qquad  sprintf(rotX, "\%d", rollT);   \\
-\qquad  strcat(Data, rotX); \\
-\\
-\qquad  // rotY  \\
-\qquad  strcat(Data,":"); \\
-\qquad  char rotY[5]; \\
-\qquad  sprintf(rotY, "\%d", pitchT);   \\
-\qquad  strcat(Data, rotY); \\
-\\
-\qquad  // rotZ \\
-\qquad  strcat(Data,":"); \\
-\qquad  char rotZ[5]; \\
-\qquad  sprintf(rotZ, "\%d", yawT);   \\
-\qquad  strcat(Data, rotZ); \\
-\\  
-\qquad // Eixos \\
-\qquad  // Eixo 7 \\
-\qquad  strcat(Data,":");   \\
-\qquad  char flex1[5]; \\
-\qquad  sprintf(flex1, "\%d", dedo1);  \\
-\qquad  strcat(Data, flex1); \\
-\\
-\qquad  // Eixo 8 \\
-\qquad  strcat(Data,":"); \\
-\qquad  char flex2[5];  \\
-\qquad  sprintf(flex2, "\%d", dedo2);   \\
-\qquad  strcat(Data, flex2); \\
-\\
-\qquad  // Eixo 9 \\
-\qquad  strcat(Data,":"); \\
-\qquad  char flex3[5]; \\
-\qquad  sprintf(flex3, "\%d", dedo3);  \\
-\qquad  strcat(Data, flex3); \\   
-\\
-\qquad  // Eixo 10 \\
-\qquad  strcat(Data,":"); \\
-\qquad  char flex4[5];  \\
-\qquad  sprintf(flex4, "\%d", dedo4); \\  
-\qquad  strcat(Data, flex4); \\    
-\\
-\qquad  // Eixo 11 \\
-\qquad  strcat(Data,":"); \\
-\qquad  char flex5[5]; \\
-\qquad  sprintf(flex5, "\%d", dedo5); \\  
-\qquad  strcat(Data, flex5); \\    
-\\  
-\qquad  strcat(Data,";"); \\
-\\
-\qquad Serial.println(Data); \\
-\\ 
-\qquad  bluetooth.print(Data); \\
-\qquad  delay(40); \\
-\\
-\qquad  // Se chegar algo pelo Bluetooth \\
-\qquad  if(bluetooth.available())  \\
-\qquad  \{ \\
-\qquad \qquad    // Armazenando em uma variavel o valor recebido \\
-\qquad \qquad    incomingByte = bluetooth.read(); \\
-  \\  
-\qquad \qquad    // Recalibrando giroscopio ao chegar a \\
-\qquad \qquad    if((char)incomingByte == 'a')\{ \\
-\qquad \qquad \qquad       bootando();    \\
-\qquad \qquad    \} \\
-\\
-\qquad \qquad   // Zerando os valores do giroscopio \\
-\qquad \qquad   else if((char)incomingByte == 's')\{ \\
-\qquad \qquad \qquad      pitch = 0; \\
-\qquad \qquad \qquad      roll = 0; \\
-\qquad \qquad \qquad      yaw = 0;  \\
-\qquad \qquad    \}  \\  
-\qquad  \} \\
-  \\
-  \\
-\qquad  if(Serial.available())  \\
-\qquad  \{ \\
-\qquad \qquad        //  Manda os caracteres enviados pela Serial do PC para o  bluetooth \\
-\qquad \qquad        bluetooth.print((char)Serial.read()); \\     
-\\
-\qquad \qquad  // Da um delay para esperar completar o periodo desejado \\
-\qquad \qquad  delay((timeStep*1000) - (millis() - timer)); \\
-\quad  \} \\
-\} \\
-
-\\
-
-
- \hline
- \end{longtable}
-
-
-\chapter{Código Fonte Arduino - Receptor}
-  \label{app:apendiceB}
-    
- %\begin{longtable}[l]{| l |}
-%\begin{longtable}[l]{@{\extracolsep{\fill}} |l| }
-\begin{longtable}{Rp{15cm}}
- \hline
-
-//Inclui as bibliotecas\\
-\#include "SoftwareSerial.h"\\
-\#include <Joystick.h> \\
-\\
-// Criando um joystick (Pos,Rot) \\
-Joystick\_ Joystick(0x03,0x04,0,0,true,true,true,true,true,true,false,false,false,false,false);\\
-\\
-// Criando Joystick para Flex Sesors\\
-Joystick\_ Joystick2(0x04,0x04,0,0,true,true,true,true,true,false,false,false,false,false,false);\\
-\\
-//Create a new software  serial \\
-//TX, RX (Bluetooth){RX no pino 10 pela necessidade de RX do arduino Leonardo}\\
-SoftwareSerial bluetooth(10, 11);  \\
-int incomingByte;      // a variable to read incoming serial data into \\
-\\
-// Pino de entrada para leitura ADC (Pino A0 - 5) \\
-int analogPinX = 0; \\
-int analogPinY = 1; \\
-\\
-long int valX = 0; \\
-long int valY = 0; \\
-int count = 0; \\
-\\
-// Variaveis de controle \\
-int posIndex = 0; \\
-const int nPosDados = 11; \\
-int dadosPos[nPosDados]; \\
-int tempPos[nPosDados]; \\
-\\
-// Variavel que chegou mensagem \\
-bool chegouMsg = false; \\
-\\
-char debug; \\
-\\
-void atualizaControle(char incomingByte)\{ \\
-\qquad  /* \\
-\qquad   * Funcao utilizada para obter todos os parametros e atualizar de uma unica \\
-\qquad   * vez a colecao a ser utilizada \\
-\qquad   */ \\
-   \\
-\qquad // Debug Geral \\
-\qquad //Serial.println(incomingByte); \\
-\\
-\qquad    // Reseta o indice da posicao recebida \\
-\qquad    if((char)incomingByte == ';')\{ \\
-\\
-\qquad \qquad      // Verifica se o indice esta correto para encerramento \\
-\qquad \qquad      // Chegou todos os parametros \\
-\qquad \qquad      if(posIndex == 10)\{ \\
-        \\
-\qquad \qquad \qquad       // Transfere os dados e limpa o vetor temporario para novos dados \\
-\qquad \qquad \qquad        for(int i = 0; i < nPosDados; i++)\{ \\
-\qquad \qquad \qquad \qquad          dadosPos[i] = tempPos[i]; \\
-\qquad \qquad \qquad \qquad          tempPos[i] = 0; \\
-\qquad \qquad \qquad        \} \\ 
-\\
-\qquad \qquad \qquad        // Verificacao se a mensagem chegou \\
-\qquad \qquad \qquad        //Serial.println("OK"); \\
-\qquad \qquad \qquad        chegouMsg = true; \\                   
-\\
-\qquad \qquad \qquad        // Reinicia o indice \\
-\qquad \qquad \qquad        posIndex = 0; \\
-\qquad \qquad       \} \\
-\qquad \qquad      else\{ \\
-\qquad \qquad \qquad        // Limpa o vetor temporario para novos dados \\
-\qquad \qquad \qquad        for(int i = 0; i < nPosDados; i++)\{ \\
-\qquad \qquad \qquad \qquad          tempPos[i] = 0; \\
-\qquad \qquad \qquad        \} \\
-\\
-\qquad \qquad \qquad        // Reinicia o indice \\
-\qquad \qquad \qquad        posIndex = 0; \\        
-\qquad \qquad      \} \\
-\qquad    \} \\
-\\
-\qquad    // Verifica se chegou o separador de informacao (:) \\
-\qquad    else if((char)incomingByte == ':')\{ \\
-\qquad \qquad      // Verifica se ja nao ouve um estouro do indice de informacao \\
-\qquad \qquad      if(posIndex < 10)\{ \\
-\qquad \qquad \qquad        // Checa se o valor do indice esta valido antes de ir para o proximo \\
-\qquad \qquad \qquad          // Valor invalido (abaixo de 0 ou acima de 1023) \\
-\qquad \qquad \qquad         if((tempPos[posIndex] < 0) || (tempPos[posIndex] > 1023))\{ \\
-\qquad \qquad \qquad \qquad          // Limpa o vetor temporario para novos dados \\
-\qquad \qquad \qquad \qquad          for(int i = 0; i < nPosDados; i++)\{ \\
-\qquad \qquad \qquad \qquad \qquad            tempPos[i] = 0; \\
-\qquad \qquad \qquad \qquad          \} \\  
-\\
-\qquad \qquad \qquad \qquad          // Reinicia o indice \\
-\qquad \qquad \qquad \qquad          posIndex = 0; \\          
-\qquad \qquad \qquad        \} \\
-        \\
-\qquad \qquad \qquad        // Caso esteja valido \\
-\qquad \qquad \qquad        else\{ \\
-\qquad \qquad \qquad \qquad            // Incrementa o indice \\
-\qquad \qquad \qquad \qquad            posIndex++; \\        
-\qquad \qquad \qquad        \} \\
-\qquad \qquad      \} \\
-\qquad \qquad      // Houve um estouro do indice \\
-\qquad \qquad      else\{ \\
-\qquad \qquad \qquad        // Limpa o vetor temporario para novos dados \\
-\qquad \qquad \qquad        for(int i = 0; i < nPosDados; i++)\{ \\
-\qquad \qquad \qquad \qquad          tempPos[i] = 0; \\
-\qquad \qquad \qquad        \} \\
-\\
-\qquad \qquad \qquad        // Reinicia o indice \\
-\qquad \qquad \qquad        posIndex = 0; \\   
-\qquad \qquad      \} \\
-\qquad    \} \\
-\qquad    else\{ \\
-\qquad \qquad      // Valida se o que chegou e um digito entre 0 e 9 \\
-\qquad \qquad      // Digito valido \\
-\qquad \qquad      if((((int)incomingByte - 48) >= 0) || (((int)incomingByte - 48) <= 9))\{ \\
-\qquad \qquad \qquad          // Vai deslocando o numero para \\
-\qquad \qquad \qquad          //o lado (o -48 converte de ASCII para inteiro de acordo com a tabela) \\
-\qquad \qquad \qquad          tempPos[posIndex] = tempPos[posIndex] * 10 + ((int)incomingByte - 48);   \\       
-\\
-\qquad \qquad \qquad          // Valida se o valor ainda esta na faixa valida ou nao \\
-\qquad \qquad \qquad          // Faixa invalida \\
-\qquad \qquad \qquad            if((tempPos[posIndex] < 0) || (tempPos[posIndex] > 1023))\{ \\
-\qquad \qquad \qquad \qquad              // Limpa o vetor temporario para novos dados \\
-\qquad \qquad \qquad \qquad              for(int i = 0; i < nPosDados; i++)\{ \\
-\qquad \qquad \qquad \qquad \qquad                tempPos[i] = 0; \\
-\qquad \qquad \qquad \qquad              \} \\
-              \\
-  \\
-\qquad \qquad \qquad \qquad              // Reinicia o indice \\
-\qquad \qquad \qquad \qquad              posIndex = 0; \\
-\qquad \qquad \qquad            \} \\
-\qquad \qquad      \} \\
-\qquad \qquad      // Digito nao valido \\
-\qquad \qquad      else\{ \\
-\qquad \qquad \qquad        // Limpa o vetor temporario para novos dados \\
-\qquad \qquad \qquad        for(int i = 0; i < nPosDados; i++)\{ \\
-\qquad \qquad \qquad \qquad          tempPos[i] = 0; \\
-\qquad \qquad \qquad        \} \\
-
-\qquad \qquad \qquad        // Reinicia o indice \\
-\qquad \qquad \qquad        posIndex = 0; \\          
-\qquad \qquad      \} \\
-\qquad    \} \\
-\} \\
-\\
-void configuraBaudBTHC05()\{ \\
-\qquad  // Inicia o modulo Bluetooth com um taxa de transferencia (baud rate) de 57600 bps\\
-\qquad  bluetooth.begin(57600);\\  
-\qquad  // Adiciona um delay \\
-\qquad  delay(300); \\
-\} \\
-\\
-void setup() \{ \\
-\qquad  // Inicialiando comunicacao serial com PC \\
-\qquad  Serial.begin(57600); \\ 
-\\
-\qquad  // \#\#\#\#\#\#\#\#\#\#\#\#\# BLOCO HC-05 \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# \\
-\qquad      // Inicia Uart na velocidade certa \\
-\qquad        configuraBaudBTHC05(); \\
-\qquad  // \#\#\#\#\#\#\#\#\#\#\#\#\#\# FIM HC-05 \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# \\
-  \\
-\qquad  // Inicia leitura valores  \\
-\qquad  Joystick.begin(); \\
-  \\
-\qquad  // Inicia valores flex \\
-\qquad  Joystick2.begin(); \\ 
-  \\
-\qquad  // 3 Eixos posicao \\
-\qquad  Joystick.setXAxisRange(0,1023); \\
-\qquad  Joystick.setYAxisRange(0,1023); \\
-\qquad  Joystick.setZAxisRange(0,1023);  \\
-\\
-\qquad  // 3 Eixos Rotacao \\
-\qquad  Joystick.setRxAxisRange(0,1023); \\
-\qquad  Joystick.setRyAxisRange(0,1023);  \\
-\qquad  Joystick.setRzAxisRange(0,1023);  \\    
-\\
-\qquad  // Restante eixos \\
-\qquad  Joystick2.setXAxisRange(0,1023); \\
-\qquad  Joystick2.setYAxisRange(0,1023); \\
-\qquad  Joystick2.setZAxisRange(0,1023); \\
-\qquad  Joystick2.setRxAxisRange(0,1023); \\
-\qquad  Joystick2.setRyAxisRange(0,1023); \\ 
-\}
-\\
-void loop() \{ \\
-\qquad  // Verificando se tem mensagem vinda da serial \\
-\qquad  if(Serial.available() > 0)\{ \\
-\qquad \qquad    bluetooth.print((char)Serial.read()); \\
-\qquad  \} \\
- \\
-\qquad  // Verifica se existe dado vindo pelo Bluetooth: \\
-\qquad  if (bluetooth.available() > 0) \{ \\
-\qquad \qquad    // Recebe o byte vindo do blueooth \\
-\qquad \qquad    incomingByte = bluetooth.read(); \\
-   \\
-\qquad \qquad    atualizaControle(incomingByte); \\
-\qquad  \} \\
-\\
-\qquad // Caso a mensagem completa chegou \\
-\qquad    if(chegouMsg)\{ \\
-\qquad \qquad    chegouMsg = false; \\
-\\
-\qquad \qquad    // Debug para printar os valores que estao no vetor de posicao \\
-\qquad \qquad    Serial.print(dadosPos[0]); \\
-\qquad \qquad    Serial.print(":");  \\
-\qquad \qquad    Serial.print(dadosPos[1]);   \\
-\qquad \qquad    Serial.print(":");  \\
-\qquad \qquad    Serial.print(dadosPos[2]);    \\
-\qquad \qquad    Serial.print(":");  \\
-\qquad \qquad    Serial.print(dadosPos[3]);   \\
-\qquad \qquad    Serial.print(":");  \\
-\qquad \qquad    Serial.print(dadosPos[4]);     \\
-\qquad \qquad    Serial.print(":");  \\
-\qquad \qquad    Serial.print(dadosPos[5]);     \\
-\qquad \qquad    Serial.print(":");  \\
-\qquad \qquad    Serial.print(dadosPos[6]);  \\
-\qquad \qquad    Serial.print(":");  \\
-\qquad \qquad    Serial.print(dadosPos[7]);    \\
-\qquad \qquad    Serial.print(":");  \\
-\qquad \qquad    Serial.print(dadosPos[8]);   \\
-\qquad \qquad    Serial.print(":");  \\
-\qquad \qquad    Serial.print(dadosPos[9]);     \\
-\qquad \qquad    Serial.print(":");  \\
-\qquad \qquad    Serial.print(dadosPos[10]);       \\
-\qquad \qquad    Serial.println("");\\
-\\
-\\
-\qquad \qquad    // Define os valores obtidos pelo bluetooth \\
-\qquad \qquad    // X,Y,Z posicao \\
-\qquad \qquad    Joystick.setXAxis((dadosPos[0]/2)+512); \\
-\qquad \qquad    Joystick.setYAxis((dadosPos[1]/2)+512);  \\
-\qquad \qquad    Joystick.setZAxis((dadosPos[2]/2)+512); \\
-    \\
-    \\
-\qquad \qquad    // 3 Eixos Rotacao \\
-\qquad \qquad    Joystick.setRxAxis((dadosPos[3]/2)+512);   \\
-\qquad \qquad    Joystick.setRyAxis((dadosPos[4]/2)+512);  \\
-\qquad \qquad    Joystick.setRzAxis((dadosPos[5]/2)+512);    \\  
-\\
-\\
-\qquad \qquad    // Restante eixos \\
-\qquad \qquad    Joystick2.setXAxis((dadosPos[6]/2)+512); \\
-\qquad \qquad    Joystick2.setYAxis((dadosPos[7]/2)+512);  \\
-\qquad \qquad    Joystick2.setZAxis((dadosPos[8]/2)+512);  \\
-\qquad \qquad    Joystick2.setRxAxis((dadosPos[9]/2)+512);  \\
-\qquad \qquad    Joystick2.setRyAxis((dadosPos[10]/2)+512); \\
-    \\
-\qquad    \} \\
-\} \\
-\\
-\\
-
-
- \hline
- \end{longtable}
-
-\newpage
-\begin{table}[H]
-	\chapter{Operações básicas no Modulo Bluetooth HC-05 RS232}
-    \label{app:apendHC05}
-    \section{Acessando modo de configuração, modo AT}
-    Para realizar diversos ajustes no módulo bluetooth é necessário entrar no modo de configuração, modo AT, para esse módulo para se conseguir acessar o modo AT, é necessário alimentar a entrada (Key / EN) do módulo com 3.3 V. 
-   \\
-   \\
-   Após realizar a alimentação com 3.3 V da entrada (Key / EN), com o módulo ainda sem a alimentação de 5 V, é necessário permanecer pressionando o botão que o módulo possui em sua parte frontal e com o botão mantido pressionado inserir a alimentação de 5 V, e aguardar alguns segundos até que seu LED começe a piscar a uma taxa de aproximadamente 2 segundos.
-   \\
-   \\
-   Ao se ter o módulo com o LED piscando na taxa de 2 segundos, isso indica que ele entrou no modo AT.
-   \\
-   \\
-   Para conseguir enviar comandos para o módulo pode ser utilizado outro dispositivo utilizando a comunicação serial, porem esta precisa estar a uma taxa, Baud Rate de 38400 bps, para o módulo bluetooth interpretar os comandos.
-   \\
-   \\
-   Para uma correta troca de mensagens, é necessário definir nas configurações as opções para considerar nas trocas de mensagem considerar os identificadores de retorno de carro(CR) e de nova linha (NL).
-   \\
-   \\
-   Se todas as configurações foram realizadas com sucesso, ao enviar AT para o módulo bluetooth, esse deverá responder com uma mensagem OK.
-   
-   \subsection{Operações básicas no modo AT}
-   Estando no modo AT é possível realizar diversas configurações no módulo bluetooth, alguns exemplos são:
-   \begin{itemize}
-        \item{AT+VERSION : Retorna a versão do \textit{firmware} do módulo} 
-        \item{AT+ORIG : Retorna o módulo para as definições de fábrica}
-        \item{AT+UART? : Mostra as detalhes sobre a configuração \textit{UART} do módulo}
-
-        Neste caso uma possível resposta é 9600,0,0 
-        \\
-        Onde 9600 representa o \textit{baud rate}, o primeiro 0 representa a quantidade de bits de parada e o segundo 0 representa o bit de paridade.
-        \item{AT+UART = 115200,0,0 : Configura a comunicação UART do módulo}
-        \item{AT+PSWD = senha : Define uma senha para o módulo}
-        \item{AT+PSWD? : Informa qual é a senha atual}
-   \end{itemize}
-\end{table} 
-
-\newpage
-
-	\chapter{Código Fonte Unity} \label{apendiceD}
-
-\begin{longtable}{Rp{15cm}}
-%\begin{longtable}[l]{ |l| }
- \hline
-\\
-using System.Collections;
-\\
-using System.Collections.Generic;
-\\
-using UnityEngine;
-\\
-\\
-public class location : MonoBehaviour \{
-\\
-\quad 	//Array de valores contendo as intensidades das três antenas a cada 5 centímetros
-\\
-\\
-\quad  //x = 80khz valores lidos a cada 5 centímetros até a base
-\\
-\quad		private float[] table1 = \{1024.0f, 1024.0f, 1024.0f, 1006.0f, 910.0f, 837.0f, 729.0f, 620.0f, 
-\\ \quad 530.0f, 415.0f, 305.0f, 219.0f, 160.0f, 93.0f, 70.0f, 41.0f, 10.0f, 0.0f,-1.0f\};
-\\
-\\
-\quad //y = 129khz valores lidos a cada 5 centímetros até a base
-\\
-\quad	private float[] table2 = \{1024.0f, 965.0f, 855.0f, 790.0f, 730.0f, 605.0f, 520.0f, 415.0f, 305.0f
-\\ \quad, 230.0f, 180.0f, 111.0f, 85.0f, 68.0f, 59.0f, 41.0f, 15.0f, 0.0f,-1.0f\}; 
-\\
-\\
-\quad //z = 205khz valores lidos a cada 5 centímetros até a base
-\\
-\quad private float[] table3 = \{1024.0f, 800.0f, 720.0f, 650.0f, 635.0f, 570.0f, 519.0f, 450.0f, 369.0f,
-\\ \quad 320.0f, 250.0f, 173.0f, 145.0f, 110.0f, 80.0f, 50.0f, 26.0f, 0.0f, -1.0f\}; 
-\\
-\\
-\quad //Intensidade recebida
-\\
-\quad	public float intensityX;
-\\
-\quad	public float intensityY;
-\\
-\quad	public float intensityZ;
-\\
-\\
-\quad	public float plusX = 1.0f;
-\\    
-\quad	public float plusY = 1.0f;
-\\
-\quad	public float plusZ = 1.0f;
-\\
-\\
-\quad	//Centro das antenas
-\\    
-\quad	public Vector3 p1;
-\\    
-\quad	public Vector3 p2;
-\\    
-\quad	public Vector3 p3;
-\\
-\\
-\quad public GameObject cube;
-\\
-\\
-\quad	// Usado para inicialização
-\\    
-\quad	void Start () \{
-\\
-\\
-\quad	\}
-\\
-\\
-\quad	// Update é chamado uma vez por frame
-\\
-\quad	void Update () \{
-\\
-\\
-\quad \quad intensityX = (Input.GetAxis("x")+1)*512.0f;
-\\
-\quad \quad intensityY = (Input.GetAxis("y")+1)*512.0f;
-\\
-\quad \quad intensityZ = (Input.GetAxis("z")+1)*512.0f;
-\\
-\\
-\quad \quad this.gameObject.transform.eulerAngles = (new Vector3(Input.GetAxisRaw("ry") * -180.0f
-\\ \quad \quad -90.0f,Input.GetAxisRaw("rz") * -180.0f +
-\\ \quad \quad 180.0f,Input.GetAxisRaw("rx") * -180.0f + 180.0f));
-\\
-\\
-\quad \quad //Obtem posições reais
-\\
-\quad \quad float posX = interpolateFromTable (table1, intensityX) + plusX;
-\\
-\quad \quad float posY = interpolateFromTable (table2, intensityY) + plusY;
-\\
-\quad \quad float posZ = interpolateFromTable (table3, intensityZ) + plusZ;
-\\
-\\
-\quad \quad //Trilateração////////////////////////////////////////////////////////////////////////////////////////////////////////////
-\\
-\\
-\quad \quad	Vector3 subt = new Vector3((p2 - p1).x, (p2 - p1).y, (p2 - p1).z);
-\\
-\quad \quad float norm = Vector3.Magnitude(subt);
-\\
-\\
-\quad \quad Vector3 ex = subt/norm;
-\\
-\\
-\quad \quad	Vector3 subt2 = new Vector3((p3 - p1).x, (p3 - p1).y, (p3 - p1).z);
-\\        
-\quad \quad	float i = Vector3.Dot (ex, subt2);
-\\
-\\
-\quad \quad	 Vector3 a = new Vector3(subt2.x - (ex.x*i), subt2.y - (ex.y*i), subt2.z - (ex.z*i));
-\\        
-\quad \quad float anorm = Vector3.Magnitude(a);
-\\
-\\
-\quad \quad Vector3 ey = a/anorm;
-\\        
-\quad \quad Vector3 ez = Vector3.Cross(ex, ey);
-\\
-\\
-\quad \quad float d = norm;
-\\        
-\quad \quad float j = Vector3.Dot(ey, subt2);
-\\
-\\
-\quad \quad float newX = ((Mathf.Pow(posX,2.0f) - Mathf.Pow(posY,2.0f) + Mathf.Pow(d,2.0f))/ (2.0f*d) );
-\\
-\quad \quad	float newY = ((Mathf.Pow(posX,2.0f) - Mathf.Pow(posZ,2.0f) + Mathf.Pow(i,2.0f) +
-\\ \quad \quad Mathf.Pow(j,2.0f)) / (2.0f * j) - (i / j) * newX);
-\\
-\\
-\quad \quad float b = Mathf.Pow(posX,2.0f) - Mathf.Pow(newX,2.0f) - Mathf.Pow(newY,2.0f);
-\\
-\\
-\quad \quad //Correção de Erro
-\\
-\quad \quad if (Mathf.Abs(b) < 0.0000000001f)\{b = 0.0f;\}
-\\
-\\
-\quad \quad float newZ = Mathf.Sqrt(b);
-\\
-\\
-\quad \quad if (float.IsNaN (newZ))\{
-\\        
-\quad \quad //Debug.Log ("is Nan");
-\\            
-\quad \quad cube.transform.position = new Vector3 (0, 0, 0);
-\\            
-\quad \quad \}
-\\        
-\quad \quad else\{
-\\
-\\
-\quad \quad \quad Vector3 mult1 = new Vector3 (ex.x * newX, ex.y * newX, ex.z * newX);
-\\            
-\quad \quad \quad Vector3 mult2 = new Vector3 (ey.x * newY, ey.y * newY, ey.z * newY);
-\\            
-\quad \quad \quad Vector3 mult3 = new Vector3 (ez.x * newZ, ez.y * newZ, ez.z * newZ);
-\\
-\\
-\quad \quad \quad Vector3 a2 = p1 + mult1 + mult2;
-\\
-\\
-\quad \quad \quad Vector3 p4a = a2 + mult3;
-\\            
-\quad \quad \quad Vector3 p4b = new Vector3 (a2.x - mult3.x, a2.y - mult3.y, a2.z - mult3.z);
-\\
-\\
-\quad \quad \quad cube.transform.position = new Vector3(p4a.x, p4a.y -1.0f, p4a.z);
-\\
-\quad \quad	\}
-\\
-\\
-\quad \}
-\\
-\\
-\quad float interpolateFromTable (float[] table, float intensity)
-\\
-\quad \{
-\\
-\\
-\quad \quad int posMid = 0;
-\\
-\\
-\quad \quad //Recebe valores do arduino, acha o valor mais próximo e o interpola        
-\\        
-\quad \quad for (int i = 0; i < table.Length; i++) \{
-\\
-\\
-\quad \quad \quad //Menor ou igual o valor lido
-\\
-\quad \quad \quad  if (intensity <= table [i]) \{
-\\            
-\quad \quad \quad \quad posMid = i;
-\\                
-\quad \quad \quad \}
-\\
-\\            
-\quad \quad \quad //Maior
-\\            
-\quad \quad \quad	if (intensity > table [i]) \{
-\\            
-\quad \quad \quad \quad break;
-\\                
-\quad \quad \quad	\}
-\\            
-\quad \quad \}
-\\        
-\quad \quad	//Interpola linearmente
-\\        
-\quad \quad	//Valor superior,inferior e porcentagem
-\\        
-\quad \quad	float range = table[posMid] - table[posMid+1];
-\\        
-\quad \quad	float pos = Mathf.Lerp (posMid*0.5f, (posMid*0.5f) + 0.5f, (table[posMid] - intensity)/range);
-\\        
-\quad \quad	return pos;
-\\        
-\quad \}
-\\    
-\}
-\\
-\\
- \hline
- \end{longtable}
- 
- \chapter{Fluxograma resumido aplicação geral}
- \label{app:fluxoMain}
- \begin{figure}[H]
-    \centering
-       % \caption{Fluxograma resumido da aplicação geral}
-        \includegraphics[width=0.7\linewidth]{Imagens/fluxogramaMain.jpg}
-        \caption*{Fonte: Autores (2018).}
-\end{figure}
+\section{/api/onibus-lotacao/}
+\textit{GET}
+\begin{lstlisting}
+{
+    "id": 1,
+    "id_onibus": 96587,
+    "id_linha": 2215,
+    "lotacao": "cheio",
+    "latitude": "45.658000000000001",
+    "longitude": "12.987000000000000",
+    "data_inclusao": "2020-10-09T19:41:53.075905Z"
+}    
+\end{lstlisting}
+\textit{POST}
+\begin{lstlisting}
+{
+    "img": caminho_img,
+    "id_onibus": id_onibus,
+    "id_linha": id_linha,
+    "latitude": latitude,
+    "longitude": longitude            
+}
+\end{lstlisting}
+\section{/api/onibus-posicao/}
+\textit{GET}
+\begin{lstlisting}
+{
+    "quantidade": 11992
+}
+\end{lstlisting}
+\textit{POST}
+\begin{lstlisting}
+{
+    "o": [
+        {
+            "id_onibus": id_onibus,
+            "onibus_deficiente": onibus_deficiente,
+            "horario_atualizacao_localizacao": horario_atualizacao_localizacao,
+            "latitude": latitude,
+            "longitude": longitude,
+            "id_linha": id_linha,
+            "frota": frota,
+        }
+    ]
+}
+\end{lstlisting}
+\section{/api/onibus-velocidade/}
+\textit{GET}
+\begin{lstlisting}
+{
+    "id": 1067508,
+    "nome": "BUTANTA (BAIRRO - CENTRO)",
+    "vel_trecho": 27,
+    "vel_via": 27,
+    "trecho": "de R. AMARO CAVALHEIRO ate R. PAES LEME",
+    "extensao": 650,
+    "tempo": "00:01",
+    "coordenadas": [
+        {
+            "latitude": "-23.567653",
+            "longitude": "-46.695722",
+            "id": 6217
+        },
+        {
+            "latitude": "-23.568001",
+            "longitude": "-46.696452",
+            "id": 6218
+        },
+        {
+            "latitude": "-23.568063",
+            "longitude": "-46.696595",
+            "id": 6219
+        }
+}
+\end{lstlisting}
+\textit{POST}
+\begin{lstlisting}
+{
+    "o": [
+        {
+            "name": nome,
+            "description": {
+                'vel_trecho': vel_trecho,
+                'vel_via': vel_via,
+                'trecho': trecho,
+                'extensao': extensao,
+                'tempo': tempo
+            },
+            "coordinates": {
+                'lat': latitude,
+                'lon': longitude
+            }
+        }
+    ]
+}
+\end{lstlisting}
+\section{/api/linhas/}
+\textit{GET}
+\begin{lstlisting}
+{
+    "id_linha": 264,
+    "letreiro": "509J-10",
+    "sentido": 1,
+    "letreiro_destino": "PQ. IBIRAPUERA",
+    "letreiro_origem": "JD. SELMA"
+}
+\end{lstlisting}
+\textit{POST}
+\begin{lstlisting}
+{
+    "l": [
+        {
+            "id_linha": id_linha,
+            "letreiro": letreiro,
+            "sentido": sentido,
+            "letreiro_destino": letreiro_destino,
+            "letreiro_origem": letreiro_origem,
+        }
+    ]
+}    
+\end{lstlisting}
+\section{/api/paradas/}
+\textit{GET}
+\begin{lstlisting}
+{
+    "id": 1,
+    "id_parada": 4203724,
+    "nome": "",
+    "endereco": "R. Agamenon Pereira da Silva",
+    "latitude": "-23.692865000000001",
+    "longitude": "-46.778350000000003"
+}
+\end{lstlisting}
+\textit{POST}
+\begin{lstlisting}
+{
+    "p": [
+        {
+            "id_parada": id_parada,
+            "nome": nome,
+            "endereco": endereco,
+            "latitude": latitude,
+            "longitude": longitude,
+        }
+    ]
+}
+\end{lstlisting}
+\section{/api/trens/}
+\textit{GET}
+\begin{lstlisting}
+{
+    "id": 1,
+    "id_linha": 1,
+    "data_ocorrencia": "2020-10-07T07:42:01.039607Z",
+    "descricao": null,
+    "ultima_atualizacao": "2020-10-07T21:14:01.162598Z",
+    "situacao": "Operacao Normal"
+}
+\end{lstlisting}
+\textit{POST}
+\begin{lstlisting}
+{
+    "t": [
+        {
+            "id_linha": id_linha,
+            "data_ocorrencia": data_ocorrencia,
+            "descricao": descricao,
+            "ultima_atualizacao": ultima_atualizacao,
+            "situacao": situacao,
+        }
+    ]
+}
+\end{lstlisting}
+\section{/api/climatempo/}
+\textit{GET}
+\begin{lstlisting}
+{
+    "id_cidade": 3477,
+    "temperatura": "27.00",
+    "direcao_vento": "S",
+    "velocidade_vento": "9.00",
+    "umidade": "66.00",
+    "condicao": "Nuvens esparsas",
+    "pressao": "1015.00",
+    "sensacao": "28.00",
+    "date": "2020-10-07T21:14:34.451818Z"
+}
+\end{lstlisting}
+\textit{POST}
+\begin{lstlisting}
+{
+    "ct": [
+        {
+            "id_cidade": id_cidade,
+            "temperatura": temperatura,
+            "direcao_vento": direcao_vento,
+            "velocidade_vento": velocidade_vento,
+            "umidade": umidade,
+            "condicao": condicao,
+            "pressao": pressao,
+            "sensacao": sensacao,
+        }
+    ]
+}
+\end{lstlisting}
+\section{/api/eventos/}
+\textit{GET}
+\begin{lstlisting}
+{
+    "id": 26,
+    "nome": "Maria Bethania",
+    "link": "http://premier.ticketsforfun.com.br/shows/show.aspx?sh=MARIBUB19",
+    "data_info": "Sao Paulo no UnimedHall 27 de junho",
+    "data": "2020-06-27",
+    "endereco": "Av. das Nacoes Unidas, 17955 - Vila Almeida, Sao Paulo - SP, 04795-100, Brazil",
+    "latitude": "-23.647672600000000",
+    "longitude": "-46.723812100000004",
+    "data_inclusao": "2020-10-14T00:17:58.612131Z"
+}
+\end{lstlisting}
+\textit{POST}
+\begin{lstlisting}
+{
+    "e": [
+        {
+            "nome": nome,
+            "link": link,
+            "data_info": data_info,
+            "data": data,
+            "endereco": endereco,
+            "latitude": latitude,
+            "longitude": longitude
+        }
+    ]
+}
+\end{lstlisting}
  
