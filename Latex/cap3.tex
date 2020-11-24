@@ -18,11 +18,11 @@
 
 \section{Aquisição de dados externos por meio de tarefas}
 \indent
-\par No que diz respeito à aquisição de dados para alimentação do \textit{dashboard} e sucessiva análise, foi utilizada como principal fonte, a API pública da SP-Trans, mais especificamente os \textit{endpoints} \cite{Schultz2020} “Parada”, “Posicao” e “KMZ”. Cada \textit{endpoint} é responsável por trazer informações como as paradas dos corredores dos ônibus de São Paulo, a posição dos veículos, assim como sua respectiva linha e frota em um dado instante e um arquivo \cite{TechTudo2016} contendo informações de velocidade das linhas, respectivamente.
+\par No que diz respeito à aquisição de dados para alimentação do \textit{dashboard} e sucessiva análise, foi utilizada como principal fonte, a API pública da SPTrans, mais especificamente os \textit{endpoints} \cite{Schultz2020} “Parada”, “Posicao” e “KMZ”. Cada \textit{endpoint} é responsável por trazer informações como as paradas dos corredores dos ônibus de São Paulo, a posição dos veículos, assim como sua respectiva linha e frota em um dado instante e um arquivo \cite{TechTudo2016} contendo informações de velocidade das linhas, respectivamente.
 \indent
 \par Vale ressaltar que para a aquisição dos dados do arquivo KMZ, foi realizada uma quebra do arquivo, que originalmente possui as informações em formato XML \cite{Magalhaes2020}. Esse procedimento foi necessário para obter todas as informações já tratadas do arquivo em formato JSON \cite{JSON} para carga do banco de dados.
 \indent
-\par Adicionalmente a API da SP-Trans, são coletados dados de outras fontes, como Climatempo, Direto dos Trens e \textit{Tickets for Fun}, que são responsáveis por dados como condições meteorológicas, situação das linhas de trens e metrôs em tempo real e localização e data de eventos, respectivamente.
+\par Adicionalmente a API da SPTrans, são coletados dados de outras fontes, como Climatempo, Direto dos Trens e \textit{Tickets for Fun}, que são responsáveis por dados como condições meteorológicas, situação das linhas de trens e metrôs em tempo real e localização e data de eventos, respectivamente.
 \indent
 \par Tendo em vista que todos os dados são coletados com informações em tempo real, é necessário que eles sejam armazenados para que se construa um histórico a fim de se analisar os dados futuramente. Com esse objetivo, foi utilizado o Celery \cite{Celery}, um módulo Python que permite a criação de tarefas assíncronas e agendadas. Tais tarefas foram modeladas para coletar as informações das fontes mencionadas anteriormente em um determinado período de tempo de forma assíncrona e salvá-las em um banco de dados PostgreSQL \cite{PostgreSQL}, criado exclusivamente para o projeto.
 \indent
