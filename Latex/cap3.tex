@@ -3,7 +3,7 @@
 % Capítulo 3: Materiais e Métodos (ou Metodologia)
 
 \indent
-\par A fim de solucionar o problema identificado, foram definidos métodos e estratégias com o objetivo de criar um fluxo de trabalho. A figura \ref{DiagramaDeBlocosIcones} fornece um diagrama ilustrativo e simplificado da solução proposta.
+\par A fim de solucionar o problema identificado, foram definidos métodos e estratégias com o objetivo de criar um fluxo de trabalho. A Figura \ref{DiagramaDeBlocosIcones} fornece um diagrama ilustrativo e simplificado da solução proposta.
 
 \begin{figure}[H]
     \centering
@@ -34,8 +34,7 @@
 \indent
 \par O Django utiliza o padrão \textit{model-template-view}, que fornece todas as ferramentas necessárias para o desenvolvimento \textit{web}, desde a criação de um modelo associado ao banco de dados, até o processamento de requisições e criação de páginas \textit{web} dinâmicas de forma robusta e simples. Um de seus principais diferenciais é a padronização dos aplicativos e portabilidade dos mesmos para outros projetos. Isso possibilita uma fácil implementação de módulos e aplicativos externos.
 \indent
-\par Assim sendo, um dos principais aplicativos utilizados nesse projeto foi o \textit{django-plotly-dash}, que possibilita uma fácil criação de gráficos e painéis que são atualizados em tempo real utilizando apenas código Python, sem a necessidade de escrever código HTML, CSS ou Javascript. Isso possibilitou uma integração direta dos modelos criados no Django com os gráficos. A figura \ref{printDashboard} mostra alguns exemplos de gráficos desenvolvidos com o \textit{django-plotly-dash} para o projeto.
-
+\par Assim sendo, um dos principais aplicativos utilizados nesse projeto foi o \textit{django-plotly-dash}, que possibilita uma fácil criação de gráficos e painéis que são atualizados em tempo real utilizando apenas código Python, sem a necessidade de escrever código HTML, CSS ou Javascript. Isso possibilitou uma integração direta dos modelos criados no Django com os gráficos. A Figura \ref{printDashboard} mostra alguns exemplos de gráficos desenvolvidos com o \textit{django-plotly-dash} para o projeto.
 \begin{figure}[H]
     \centering
     \caption{Gráficos criados pelo django-plotly-dash}
@@ -61,7 +60,6 @@
     \caption*{Fonte: Arquivo dos autores (2020)}
     \label{rotasDisponiveis}
 \end{figure}
-
 \begin{figure}[H]
     \centering
     \caption{Exemplo de retorno JSON do \textit{endpoint} /api/onibus-lotacao}
@@ -70,27 +68,27 @@
     \label{onibusLotacaoExemplo}
 \end{figure}
 \indent
-\par Na figura \ref{rotasDisponiveis}, podemos visualizar uma lista com todas as rotas disponíveis. Um exemplo de requisição nessas rotas pode ser visualizado na imagem \ref{onibusLotacaoExemplo}, onde é realizada uma requisição do tipo \textit{GET} no \textit{endpoint} ‘onibus-lotacao’. 
+\par Na Figura \ref{rotasDisponiveis}, é possível visualizar uma lista com todas as rotas disponíveis. Um exemplo de requisição nessas rotas pode ser visualizado na imagem \ref{onibusLotacaoExemplo}, onde é realizada uma requisição do tipo \textit{GET} no \textit{endpoint} ‘onibus-lotacao’. 
 \indent
-\par Podemos ver que a resposta foi do tipo JSON, retornando todas as informações disponíveis como, id, id\_onibus, id\_linha, lotação, latitude, longitude, data\_inclusao.
+\par A resposta é do tipo JSON, retornando todas as informações disponíveis como, id, id\_onibus, id\_linha, lotação, latitude, longitude, data\_inclusao.
 
 \section{\textit{Endpoints}}
 \indent
-\par Na imagem \ref{rotasDisponiveis}, podemos visualizar todos os \textit{endpoints} disponíveis, cada um deles possui suas informações e funções. No apêndice \ref{app:apendiceA}, uma breve descrição de cada uma delas, e como utilizá-las com os verbos \textit{GET} e \textit{POST}, assim como uma prévia do retorno das informações.
+\par Na imagem \ref{rotasDisponiveis}, é possível visualizar todos os \textit{endpoints} disponíveis, cada um deles possui suas informações e funções. No apêndice \ref{app:apendiceA}, uma breve descrição de cada uma delas, e como utilizá-las com os verbos \textit{GET} e \textit{POST}, assim como uma prévia do retorno das informações.
 \indent
 \par Foi escolhido apresentar as requisições \textit{GET} e \textit{POST} pois são através delas que o \textit{dashboard} consome os dados e que as APIs externas salvam as informações dentro do nosso banco de dados.
 
 \section{Infraestrutura de nuvem}
 \indent
-\par Pela necessidade de estar disponível a qualquer momento e de capturar o máximo de informação possível, decidimos disponibilizar o nosso sistema na nuvem, utilizando a plataforma da Amazon, principalmente os recursos da \textit{Elastic Cloud Compute} (EC2). A nossa infraestrutura gira em torno de uma máquina Linux, da categoria t2.medium, que se provou o mínimo necessário para executar o nosso sistema e aguentar a carga de algumas visitas simultâneas.
+\par Pela necessidade de estar disponível a qualquer momento e de capturar o máximo de informação possível, o sistema foi disponibilizado na nuvem, utilizando a plataforma da Amazon, principalmente os recursos da \textit{Elastic Cloud Compute} (EC2) \cite{EC2}. A infraestrutura utilizada gira em torno de uma máquina Linux, da categoria t2.medium, que se provou o mínimo necessário para executar o nosso sistema e aguentar a carga de algumas visitas simultâneas.
 \indent
-\par Começando pela máquina, as instâncias EC2 t2.medium são máquinas com 2 núcleos dedicados, 4GB de memória RAM, indicadas tanto para o uso como plataforma de desenvolvimento quanto para servidores \textit{web}. Entre suas características temos processadores com um \textit{clock} relativamente alto e ao mesmo tempo um custo baixo em comparação com as outras soluções oferecidas pela Amazon, como instâncias t3 ou A1. 
+\par Começando pela máquina, as instâncias EC2 t2.medium são máquinas com 2 núcleos dedicados, 4GB de memória RAM, indicadas tanto para o uso como plataforma de desenvolvimento quanto para servidores \textit{web}. Suas características são processadores com um \textit{clock} relativamente alto e ao mesmo tempo um custo baixo em comparação com as outras soluções oferecidas pela Amazon, como instâncias t3 ou A1. 
 \indent
-\par Decidimos usar a instância t2.medium após realizar testes tanto com a t2.micro, que é gratuita para as 750 primeiras horas por mês, quanto a t2.small, que é totalmente paga, mas mais econômica que a t2.medium. A modalidade micro apresentou dificuldades logo nos primeiros instantes, apesar de ser capaz de executar o \textit{dashboard} em Django paralelo ao banco de dados PostgreSQL, quando começamos a rodar as tasks do Celery para captura de dados, o processamento disponível para ela não foi o suficiente, atingindo 100\% de uso do núcleo disponível e deixando o sistema inutilizável, mesmo com uma única pessoa acessando. Já a instância t2.small se mostrou capaz de executar as \textit{tasks} simultaneamente ao \textit{dashboard} e o banco de dados, porém ao começar a receber acessos no \textit{dashboard} o sistema não conseguia dar conta das requisições e apresentava uma constante lentidão. 
+\par Foi decidido usar a instância t2.medium após realizar testes tanto com a t2.micro, que é gratuita para as 750 primeiras horas por mês, quanto a t2.small, que é totalmente paga, mas mais econômica que a t2.medium. A modalidade micro apresentou dificuldades logo nos primeiros instantes, apesar de ser capaz de executar o \textit{dashboard} em Django paralelo ao banco de dados PostgreSQL, quando as tasks do Celery para captura de dados começaram a ser executadas, o processamento disponível para ela não foi o suficiente, atingindo 100\% de uso do núcleo disponível e deixando o sistema inutilizável, mesmo com uma única pessoa acessando. Já a instância t2.small se mostrou capaz de executar as \textit{tasks} simultaneamente ao \textit{dashboard} e o banco de dados, porém ao começar a receber acessos no \textit{dashboard} o sistema não conseguia dar conta das requisições e apresentava uma constante lentidão. 
 \indent
-\par Com isso, chegamos a conclusão que a instância mínima para rodarmos o nosso projeto com segurança é a t3.medium, e mesmo assim rapidamente consumimos todo o seu armazenamento em pouco menos de uma semana, após isso expandimos ele de 7GB para 50GB, o que nos daria uma margem de segurança até a conclusão do projeto. Apesar da instância média ser o suficiente para o nosso uso durante o desenvolvimento, notamos que a sua configuração não seria o suficiente para um momento de fluxo constante no sistema por conta do uso do processador, que se aproxima de 100\% sempre que tem mais de dois navegadores acessando simultaneamente, por isso durante o Eureka, decidimos usar a instância t2.2xlarge, com 8 vCores e 32GB de memória ram, o que se mostrou suficiente para momentos com cerca de 10 acessos simultâneos.
+\par Com isso, conclui-se que a instância mínima para rodar o projeto com segurança é a t3.medium, e mesmo assim rapidamente todo o seu armazenamento foi consumido em pouco menos de uma semana. Após isso o disco foi expandido de 7GB para 50GB, o que daria uma margem de segurança até a conclusão do projeto. Apesar da instância média ser o suficiente para o uso durante o desenvolvimento, sua configuração não seria o suficiente para um momento de fluxo constante no sistema por conta do uso do processador, que se aproxima de 100\% sempre que tem mais de dois navegadores acessando simultaneamente, por isso durante o Eureka, foi utilizada a instância t2.2xlarge, com 8 vCores e 32GB de memória RAM, o que se mostrou suficiente para momentos com cerca de 10 acessos simultâneos.
 
-\par Para o acesso à instância pelo navegador, usamos uma implantação simples do NGINX \cite{NGINX}, um servidor web muito popular por sua facilidade de uso e segurança. O servidor é o primeiro lugar que as requisições web chegam na instância e o NGINX distribui essas requisições para cada local definido em suas configurações, na nossa situação temos uma rota só para os arquivos estáticos e outra para o sistema em si. Isso permite uma velocidade de resposta maior que se todos os elementos estivessem na mesma e rota e facilita a manutenção dos arquivos do sistema.
+\par Para o acesso à instância pelo navegador, uma implantação simples do NGINX \cite{NGINX} foi utilizada, um servidor web muito popular por sua facilidade de uso e segurança. O servidor é o primeiro lugar que as requisições web chegam na instância e o NGINX distribui essas requisições para cada local definido em suas configurações. No sistema desenvolvido existe uma rota só para os arquivos estáticos e outra para o sistema em si. Isso permite uma velocidade de resposta maior que se todos os elementos estivessem na mesma rota e facilita a manutenção dos arquivos do sistema.
 
 
 
