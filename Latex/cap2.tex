@@ -8,23 +8,13 @@
 \section{Tecnologia de Monitoramento de Ônibus}
 
 \indent
-\par De acordo com a informação exposta em uma publicação feita em 2017 pela Escola de Negócios da Universidade de Indiana, era previsto um crescimento anual de mais de 23\% no mercado de \textit{Big Data} durante o período de 2014 a 2019, com um custo de \$48,6 bilhões no último ano. Isso inclui um crescimento de 30\% entre 2014 e 2015 de aparelhos conectados e dispositivos de IoT. Estes aparelhos geram uma quantidade enorme de dados valiosos para quem tiver interesse de processá-los \cite{Lee2017}.
+\par De acordo com a informação exposta em uma publicação feita em 2017 pela Escola de Negócios da Universidade de Indiana, era previsto um crescimento anual de mais de 23\% no mercado de \textit{Big Data} durante o período de 2014 a 2019, com um custo de \$48,6 bilhões no último ano. Isso inclui um crescimento de 30\% entre 2014 e 2015 de aparelhos conectados e dispositivos de IoT. Estes aparelhos geram uma quantidade enorme de dados valiosos para quem tiver interesse de processá-los \cite{Lee2017}. Esse cenário hoje não é diferente para o setor de transporte público, com a prefeitura de São Paulo capturando dados em tempo real da sua frota de ônibus, informações como bilhetagem, velocidade e paradas dos veículos, porém não utilizando a informação para a tomada de decisão.
 
-\par Esse cenário hoje não é diferente para o setor de transporte público, com a prefeitura de São Paulo capturando dados em tempo real da sua frota de ônibus, informações como bilhetagem, velocidade e paradas dos veículos, porém não utilizando a informação para a tomada de decisão.
+\par Um exemplo de uso prático desses dados foi apresentado na Conferência Internacional da Logística e Transporte Avançado. Em uma colaboração entre a IBM e o Conselho da Cidade de Dublin foi realizado um projeto de cidade inteligente entre 2010 e 2013 \cite{BenAyed2015}. A IBM passou a processar os dados gerados pela frota de ônibus, além de outras fontes, com intenção de reduzir o trânsito na cidade sem precisar alterar a sua estrutura atual, que conta com vários pontos históricos. O inicio do processo se dava com informações coletadas do ônibus, como dados de GPS, velocidade, paradas e bilhetagem, e depois eram adicionadas novas informações vindas de sistemas de semáforos, \textit{CCTV}, sistemas meteorológicos, entre outros. Todos esses dados então eram processados em um servidor da IBM e disponibilizados em mapa em tempo real do transporte público de Dublin. Com toda essa informação processada, a cidade teve uma maior capacidade de monitorar o seu sistema de transporte público, diminuindo o tempo para uma tomada de decisão.
 
-\par Um exemplo de uso prático desses dados foi publicado em um artigo da IEE, para a Conferência Internacional da Logística e Transporte Avançado. Em uma colaboração entre a IBM e o Conselho da Cidade de Dublin foi realizado um projeto de cidade inteligente entre 2010 e 2013 \cite{BenAyed2015}. A IBM passou a processar os dados gerados pela frota de ônibus, além de outras fontes, com intenção de reduzir o trânsito na cidade sem precisar alterar a sua estrutura atual, que conta com vários pontos históricos.
+\par Outro exemplo de aplicação de tecnologia no monitoramento de transporte coletivo é do USapiens, um sistema desenvolvido por um time de pesquisa da IBM do Brasil \cite{Vieira2015}. Essa equipe usou dados de transporte coletivo da cidade do Rio de Janeiro para desenvolver um sistema que processa os dados recebidos pelo GPS dos ônibus e depois disso analisa-se por diversos modelos esses dados. Para isso eles integraram os dados obtidos pelo GPS com informações disponíveis de GTFS \cite{GTFS}, sigla para \textit{General Transit Feed Specification}, que contém dados mais gerais das rotas de ônibus, como paradas e horários esperados. Feita essa integração, os dados são limpos para prevenir problemas como latitude/longitude imprecisas ou dados com intervalo de tempo muito grande. Com os dados prontos, é feita uma comparação com a rota do GTFS, se descobre a direção do veículo e com isso tem seu trajeto normalizado em uma escala de distância e tempo acumulativas.
 
-\par O inicio do processo se dava com informações coletadas do ônibus, como dados de GPS, velocidade, paradas e bilhetagem, e depois eram adicionadas novas informações vindas de sistemas de semáforos, \textit{CCTV}, sistemas meteorológicos, entre outros. Todos esses dados então eram processados em um servidor da IBM e disponibilizados em mapa em tempo real do transporte público de Dublin.
-
-\par Com toda essa informação processada, a cidade teve uma maior capacidade de monitorar o seu sistema de transporte público, diminuindo o tempo para uma tomada de decisão.
-
-\par Outro exemplo de aplicação de tecnologia no monitoramento de transporte coletivo é do USapiens, um sistema desenvolvido por um time de pesquisa da IBM do Brasil \cite{Vieira2015}. Essa equipe usou dados de transporte coletivo da cidade do Rio de Janeiro para desenvolver um sistema que processa os dados recebidos pelo GPS dos ônibus e depois disso analisa-se por diversos modelos esses dados.
-
-\par Para isso eles integraram os dados obtidos pelo GPS com informações disponíveis de GTFS \cite{GTFS}, sigla para \textit{General Transit Feed Specification}, que contém dados mais gerais das rotas de ônibus, como paradas e horários esperados. Feita essa integração, os dados são limpos para prevenir problemas como latitude/longitude imprecisas ou dados com intervalo de tempo muito grande. Com os dados prontos, é feita uma comparação com a rota do GTFS, se descobre a direção do veículo e com isso tem seu trajeto normalizado em uma escala de distância e tempo acumulativas.
-
-\par Com a informação normalizada, o sistema pode ajudar a responder três perguntas principais. Através de uma análise descritiva histórica podemos responder "O que aconteceu e porque?", analisando os dados em tempo real se responde "O que está acontecendo e porque?" e uma análise preditiva responde "O que vai acontecer e porquê?".
-
-\par Os pesquisadores da IBM depois aplicaram esse sistema a 5 casos de estudo. O primeiro foi uma Análise de Uniformidade dos Ônibus, para evitar um agrupamento de veículos na linha, o segundo caso foi uma verificação na rotas dos ônibus, para avaliar a aderência do veículo a sua rota pré-definida, o terceiro uma análise de fluxo no trânsito, o quarto a variância do tempo de viagem do veículo, que permite avaliar a consistência da rota analisada, e para o quinto ele usaram a análise preditiva para prever o tempo de chegada do ônibus.
+\par Com a informação normalizada, o sistema pode ajudar a responder três perguntas principais. Através de uma análise descritiva histórica podemos responder "O que aconteceu e porque?", analisando os dados em tempo real se responde "O que está acontecendo e porque?" e uma análise preditiva responde "O que vai acontecer e porquê?". Os pesquisadores da IBM depois aplicaram esse sistema a 5 casos de estudo. O primeiro foi uma Análise de Uniformidade dos Ônibus, para evitar um agrupamento de veículos na linha, o segundo caso foi uma verificação na rotas dos ônibus, para avaliar a aderência do veículo a sua rota pré-definida, o terceiro uma análise de fluxo no trânsito, o quarto a variância do tempo de viagem do veículo, que permite avaliar a consistência da rota analisada, e para o quinto ele usaram a análise preditiva para prever o tempo de chegada do ônibus.
 
 \section{\textit{Dashboard}}
 
@@ -45,21 +35,13 @@
 
 \par Além disso, os \textit{dashboards} monitoram os dados, com o intuito de melhorar todos os processos. Eles permitem que o usuário personalize painéis e filtre informações para a visualização dos resultados, como quantidade, tempo e outras opções \cite{Tecnicon}.
 
-\subsection{Benefícios do uso para as empresas}
-
 \indent
-\par A aplicação dos \textit{dashboards} na gestão empresarial traz muitos benefícios para a tomada de decisão e a visão estratégica do seu negócio, que fica cada vez mais fácil através da centralização,  visualização e compreensão das informações, o que possibilita uma visão ampla do seu negócio.
-
-\par Na gestão, é importante que todas as equipes tenham acesso aos indicadores da empresa, mantendo a transparência das informações. As ferramentas de \textit{dashboard} tem o objetivo de facilitar a comunicação interna entre todos os profissionais, otimizando o tempo para tomarem decisões e evitarem trabalhos manuais e complexos com a organização de dados, passando a priorizar outras atividades mais relevantes. Com as informações consolidadas em um único painel, a gestão se torna mais ágil e efetiva, possibilitando o alinhamento de estratégias e decisões para o negócio \cite{Tecnicon}.
-
-\subsection{Antecipação de problemas}
+\par A aplicação dos \textit{dashboards} na gestão empresarial traz muitos benefícios para a tomada de decisão e a visão estratégica do seu negócio, que fica cada vez mais fácil através da centralização,  visualização e compreensão das informações, o que possibilita uma visão ampla do seu negócio. Na gestão, é importante que todas as equipes tenham acesso aos indicadores da empresa, mantendo a transparência das informações. As ferramentas de \textit{dashboard} tem o objetivo de facilitar a comunicação interna entre todos os profissionais, otimizando o tempo para tomarem decisões e evitarem trabalhos manuais e complexos com a organização de dados, passando a priorizar outras atividades mais relevantes. Com as informações consolidadas em um único painel, a gestão se torna mais ágil e efetiva, possibilitando o alinhamento de estratégias e decisões para o negócio \cite{Tecnicon}.
 
 \indent
 \par Como o \textit{dashboard} trabalha com atualizações constantes e análises mais específicas, é mais fácil prever problemas e tendências negativas que podem vir a acontecer. Estes problemas ficam mais explícitos com o uso da tecnologia de inteligência artificial que os identifica de maneira mais fácil.
 
 \par Qualquer mudança é detectada com mais simplicidade e o tempo para pensar nas possíveis soluções se torna muito maior. Isso melhora o processo de tomada de decisão e evita possíveis prejuízos \cite{Systemsat}.
-
-\subsection{Experiência de uso}
 
 \indent
 \par Uma boa interface e uma boa experiência de uso se dá pela arquitetura das informação do \textit{dashboard}. É fundamental que seja organizado, coerente e intuitivo. O objetivo é tornar o mais fácil possível encontrar o que se procura. Através de menus, cores e  símbolos é possível saber quais são as opções e deixar claro as consequências que cada ação irá gerar. Dessa forma, a experiência do usuário ao usar o \textit{dashboard} será rápida e efetiva, atendendo suas expectativas \cite{Hostinger}.
@@ -73,9 +55,7 @@
 \indent
 \par Devido a essa arquitetura utilizada por padrão no Django, cada projeto é subdividido em diversos aplicativos, que são criados conforme a necessidade do desenvolvedor, os quais implementam individualmente o modelo MTV. Isso permite que esses aplicativos se tornem partes independentes do sistema, aumentando a sua portabilidade para outros projetos e consequentemente, o reaproveitamento de código.
 \indent
-\par Assim sendo, um aplicativo Django criado por algum desenvolvedor pode ser facilmente transformado em um pacote Python e disponibilizadao no repositório de \textit{softwares} oficial do Python, o PyPI \cite{PYPI}. Isso permite que a comunidade reutilize um mesmo código que já foi desenvolvido para uma finalidade específica.
-\indent
-\par Dois importantes pacotes utilizados neste projeto são o Django REST \textit{Framework} \cite{DjangoRF}, que permite a fácil criação de APIs integradas com os modelos do Django e o Django \textit{Plotly Dash} \cite{DjangoPD}, que implementa múltiplos estilos de gráficos e visualizações de dados escrevendo apenas código Python, que por sua vez podem ser facilmente incluídos em um template do Django.
+\par Assim sendo, um aplicativo Django criado por algum desenvolvedor pode ser facilmente transformado em um pacote Python e disponibilizadao no repositório de \textit{softwares} oficial do Python, o PyPI \cite{PYPI}. Isso permite que a comunidade reutilize um mesmo código que já foi desenvolvido para uma finalidade específica. Dois importantes pacotes utilizados neste projeto são o Django REST \textit{Framework} \cite{DjangoRF}, que permite a fácil criação de APIs integradas com os modelos do Django e o Django \textit{Plotly Dash} \cite{DjangoPD}, que implementa múltiplos estilos de gráficos e visualizações de dados escrevendo apenas código Python, que por sua vez podem ser facilmente incluídos em um template do Django.
 
 \section{Agendamento e execução de tarefas com Celery}
 
@@ -97,7 +77,7 @@
 \indent
 \par Essas infraestruturas permitem seus clientes usarem os recursos de maneira escalável e instantânea, sem precisar se preocupar com a infraestrutura física ou com a necessidade de \textit{softwares} novos. As empresas provedoras garantem a manutenção das máquinas em si e permitem que os usuários foquem no serviço que estão prestando ou desenvolvendo.
 \indent
-\par Entre os serviços que esse modelo de computação fornece estão o SaaS, \textit{software} como serviço ou \textit{software} as a \textit{service}, que são as aplicações que acessamos pelo navegador, como o Google Suit ou o Office 365, o IaaS, infraestrutura como serviço ou \textit{infrastructure as a service}, que são soluções completas de computação na nuvem, permitindo desde de máquinas virtuais simples até servidores que precisam atender grandes demandas de processamento a todo momento, o PaaS, plataforma como serviço ou \textit{platform} as a service, que são serviços com plataformas já minimamente configuradas, voltadas a desenvolvedores que precisam de agilidade para disponibilizar uma aplicação e que não querem ter o trabalho de configurar um IaaS mais completa, e por último o FaaS, função como serviço ou \textit{function as a service}, que é uma camada de abstração do PaaS, onde o desenvolvedor precisa de apenas alguns trechos de código para se comunicar com funções específicas do seu provedor de nuvem, como AWS Lambda ou o IBM OpenWhisk.
+\par Entre os serviços que esse modelo de computação fornece estão o SaaS, \textit{software} como serviço ou \textit{software} as a \textit{service}, que são as aplicações que acessamos pelo navegador, como o Google Suit ou o Office 365, o IaaS, infraestrutura como serviço ou \textit{infrastructure as a service}, que são soluções completas de computação na nuvem, permitindo desde de máquinas virtuais simples até servidores que precisam atender grandes demandas de processamento a todo momento, o PaaS, plataforma como serviço ou \textit{platform} as a service, que são serviços com plataformas já minimamente configuradas, voltadas a desenvolvedores que precisam de agilidade para disponibilizar uma aplicação e que não querem ter o trabalho de configurar um IaaS mais completa, e por último o FaaS, função como serviço ou \textit{function as a service}, que é uma camada de abstração do PaaS, onde o desenvolvedor precisa de apenas alguns trechos de código para se comunicar com funções específicas do seu provedor de nuvem, como AWS Lambda ou o IBM OpenWhisk \cite{CloudComp}.
 
 \subsection{Amazon Web Services}
 
@@ -139,22 +119,18 @@
 \indent
 \par Apesar de estar cada vez mais em destaque nestes últimos anos, podemos traçar o uso de estatística para tomada de decisão desde do Egito Antigo, de acordo com um artigo publicado por Keith D. Foote \cite{Foote2018} os egípcios já usavam cálculos estatísticos para construir as pirâmides. Já na década de 1880, o governo americano levou pelo menos 7 anos para completar o censo da população, processo que foi reduzido para um ano e meio na década seguinte por causa do desenvolvimento de uma máquina de tabulação, por Herman Hollerith, que processava os dados de forma sistêmica em cartões perfurados.
 
-\subsection{Primeira fase da análise de dados}
+\subsection{Fases da análise de dados}
 
 \indent
-\par Trazendo para os dias atuais, a Universidade de Villanova separa a análise de dados em três estágios \cite{Villanova}. O primeiro deles seria o início do que chamamos de \textit{Business Intelligence}, que surgiu por volta de 1950 como uma forma de processar pequenas quantidades de informações estruturadas. Esse estágio, que podemos chamar de \textit{Analytics 1.0}, durou até cerca de 2009, quando foi consolidado o termo \textit{"big-data"}.
+\par Trazendo para os dias atuais, a Universidade de Villanova separa a análise de dados em três estágios. O primeiro deles seria o início do que chamamos de \textit{Business Intelligence}, que surgiu por volta de 1950 como uma forma de processar pequenas quantidades de informações estruturadas. Esse estágio, que podemos chamar de \textit{Analytics 1.0}, durou até cerca de 2009, quando foi consolidado o termo \textit{"big-data"}.
 
 \par O fim do primeiro estágio se deu pelo aumento exponencial de dados sendo produzidos diariamente, podendo vir de qualquer lugar e forma, desde de informações simples e estruturadas, como quais produtos alguém comprou em um determinado site, ou coisas mais complexas, como quais sites fizeram essa pessoa chegar até uma determinada página e qual a posição geográfica dessa pessoa quando acessou a página. Se convencionou a chamar esses dados em grande quantidade e pouco estruturados de \textit{"big-data"}.
-
-\subsection{Segunda fase da análise de dados}
 
 \indent
 \par Pela dificuldade de armazenar e processar essa massiva quantidade de dados, se fez necessário o desenvolvimento de novos métodos e ferramentas para o processamento deles, o que deu início ao \textit{Analytics 2.0}, que trouxe alternativas como Hadoop, que pode processar essas grandes massas de dados, e o NoSQL, que permite armazenar toda a informação de forma mais eficiente que os bancos de dados relacionais faziam até então. Além disso, cada vez mais se fez necessário um conhecimento tecnológico para fazer essas análises, quando até então bastava o conhecimento de métodos estatísticos.
 
-\subsection{Terceira fase da análise de dados}
-
 \indent
-\par Hoje em dia, muitos especialistas dizem que chegamos a um terceiro estágio, o \textit{Analytics 3.0}, onde esses dados que são produzidos a qualquer momento podem ser usados como moeda de troca entre consumidor e fornecedor. Essa moeda pode ser analisada imediatamente pelo fornecedor, que passa a entregar uma experiência personalizada para quem está consumindo o seu produto.
+\par Hoje em dia, muitos especialistas dizem que chegamos a um terceiro estágio, o \textit{Analytics 3.0}, onde esses dados que são produzidos a qualquer momento podem ser usados como moeda de troca entre consumidor e fornecedor. Essa moeda pode ser analisada imediatamente pelo fornecedor, que passa a entregar uma experiência personalizada para quem está consumindo o seu produto \cite{Villanova}.
 
 \subsection{Análise de dados no dia a dia}
 
