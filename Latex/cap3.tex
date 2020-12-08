@@ -8,7 +8,7 @@
 \begin{figure}[H]
     \centering
     \caption{Ilustração da solução}
-    \includegraphics[width=1.0\linewidth]{Imagens/DiagramaDeBlocosIcones.png}
+    \includegraphics[width=1.0\linewidth]{Imagens/DiagramaDeBlocosIcones.jpg}
     \caption*{Fonte: Arquivo dos autores (2020)}
     \label{DiagramaDeBlocosIcones}
 \end{figure}
@@ -67,7 +67,6 @@
     \caption*{Fonte: Arquivo dos autores (2020)}
     \label{onibusLotacaoExemplo}
 \end{figure}
-\indent
 \par Na Figura \ref{rotasDisponiveis}, é possível visualizar uma lista com todas as rotas disponíveis. Um exemplo de requisição nessas rotas pode ser visualizado na imagem \ref{onibusLotacaoExemplo}, onde é realizada uma requisição do tipo \textit{GET} no \textit{endpoint} ‘onibus-lotacao’. A resposta é do tipo JSON, retornando todas as informações disponíveis como, id, id\_onibus, id\_linha, lotação, latitude, longitude, data\_inclusao.
 
 \section{\textit{Endpoints}}
@@ -77,13 +76,26 @@
 \section{Infraestrutura de nuvem}
 \indent
 \par Pela necessidade de estar disponível a qualquer momento e de capturar o máximo de informação possível, o sistema foi disponibilizado na nuvem, utilizando a plataforma da Amazon, principalmente os recursos da \textit{Elastic Cloud Compute} (EC2) \cite{EC2}. A infraestrutura utilizada gira em torno de uma máquina Linux, da categoria t2.medium, que se provou o mínimo necessário para executar o nosso sistema e aguentar a carga de algumas visitas simultâneas.
-\indent
 \par Começando pela máquina, as instâncias EC2 t2.medium são máquinas com 2 núcleos dedicados, 4GB de memória RAM, indicadas tanto para o uso como plataforma de desenvolvimento quanto para servidores \textit{web}. Suas características são processadores com um \textit{clock} relativamente alto e ao mesmo tempo um custo baixo em comparação com as outras soluções oferecidas pela Amazon, como instâncias t3 ou A1. 
-\indent
+\begin{figure}[H]
+    \centering
+    \caption{Tipos de instância}
+    \includegraphics[width=1.0\linewidth]{Imagens/tiposDeInstancia.png}
+    \caption*{AWS, s.d. (https://aws.amazon.com/ec2/instance-types/)}
+    \label{tiposDeInstancia}
+\end{figure}
 \par Foi decidido usar a instância t2.medium após realizar testes tanto com a t2.micro, que é gratuita para as 750 primeiras horas por mês, quanto a t2.small, que é totalmente paga, mas mais econômica que a t2.medium. A modalidade micro apresentou dificuldades logo nos primeiros instantes, apesar de ser capaz de executar o \textit{dashboard} em Django paralelo ao banco de dados PostgreSQL, quando as tasks do Celery para captura de dados começaram a ser executadas, o processamento disponível para ela não foi o suficiente, atingindo 100\% de uso do núcleo disponível e deixando o sistema inutilizável, mesmo com uma única pessoa acessando. Já a instância t2.small se mostrou capaz de executar as \textit{tasks} simultaneamente ao \textit{dashboard} e o banco de dados, porém ao começar a receber acessos no \textit{dashboard} o sistema não conseguia dar conta das requisições e apresentava uma constante lentidão. 
 \indent
 \par Com isso, conclui-se que a instância mínima para rodar o projeto com segurança é a t3.medium, e mesmo assim rapidamente todo o seu armazenamento foi consumido em pouco menos de uma semana. Após isso o disco foi expandido de 7GB para 50GB, o que daria uma margem de segurança até a conclusão do projeto. Apesar da instância média ser o suficiente para o uso durante o desenvolvimento, sua configuração não seria o suficiente para um momento de fluxo constante no sistema por conta do uso do processador, que se aproxima de 100\% sempre que tem mais de dois navegadores acessando simultaneamente, por isso durante o Eureka, foi utilizada a instância t2.2xlarge, com 8 vCores e 32GB de memória RAM, o que se mostrou suficiente para momentos com cerca de 10 acessos simultâneos.
-
+\begin{figure}[H]
+    \centering
+    \caption{Configurações da instância}
+    \includegraphics[width=1.0\linewidth]{Imagens/configuracoesDaInstancia.png}
+    \caption*{AWS, s.d. (https://aws.amazon.com/ec2/instance-types/)}
+    \label{configuracoesDaInstancia}
+\end{figure}
+\indent
+\par Outra forma de contornar o problema de eficiência da instância seria trabalhando melhor a parte do banco de dados. Como a captura de informações do sistema é feito em tempo real, temos intervalos muito pequenos de ociosidade do banco de dados, e quando os acessos faziam alguma consulta na tabela ocorrem picos de processamento em que a instância não tinha capacidade de absorver. As soluções possíveis seriam o uso de um banco de dados não relacional ou o uso de um banco de dados sendo executado a parte do sistema, como em outra instância ou em um serviço como o AWS RDS. Apesar de bancos noSQL, como MongoDB ou o Cassandra, favorecerem usos em situações em que existem dados coletados em tempo real e em grande escala \cite{MongoDB}, para um sistema desenvolvido em Django acarretaria em profundas alterações no projeto, dado que o framework já conta com um ORM (Mapeamento objeto-relacional, do inglês Object-relational mapping), que trabalha unicamente com bancos relacionais \cite{Alura}. A forma mais factível de resolver esse problema otimizando o banco de dados seria transferindo ele para um RDS, o que criaria um novo custo, mas com a possibilidade de redução de gastos com a instância EC2, porém, dado a proximidade da Eureka, não existiu tempo hábil entre a detecção do problema e a data de apresentação do sistema.
 \par Para o acesso à instância pelo navegador, uma implantação simples do NGINX \cite{NGINX} foi utilizada, um servidor web muito popular por sua facilidade de uso e segurança. O servidor é o primeiro lugar que as requisições web chegam na instância e o NGINX distribui essas requisições para cada local definido em suas configurações. No sistema desenvolvido existe uma rota só para os arquivos estáticos e outra para o sistema em si. Isso permite uma velocidade de resposta maior que se todos os elementos estivessem na mesma rota e facilita a manutenção dos arquivos do sistema.
 
 

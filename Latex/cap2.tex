@@ -30,31 +30,19 @@
 
 \indent
 \par Segundo um estudo feito pela UNINDU (The International Congress on University Industry), 83\% das pessoas absorvem melhor as informações através da visão. Isso demonstra a importância do \textit{dashboard} para tomada de decisões rápidas e melhor análise dos indicadores,melhorando metas e atingindo objetivos.
-
 \par O \textit{Business Intelligence} (BI) \cite{TableauBI}, por exemplo, é uma área que exige precisão na coleta e controle das informações para gerar insights em base desta ferramenta. Os dados são agrupados em conjuntos de registros e disponibilizadas por meio de \textit{dashboards} para mensurar o desempenho atual e futuro da empresa de acordo com o cenário.
-
 \par Além disso, os \textit{dashboards} monitoram os dados, com o intuito de melhorar todos os processos. Eles permitem que o usuário personalize painéis e filtre informações para a visualização dos resultados, como quantidade, tempo e outras opções \cite{Tecnicon}.
-
-\indent
 \par A aplicação dos \textit{dashboards} na gestão empresarial traz muitos benefícios para a tomada de decisão e a visão estratégica do seu negócio, que fica cada vez mais fácil através da centralização,  visualização e compreensão das informações, o que possibilita uma visão ampla do seu negócio. Na gestão, é importante que todas as equipes tenham acesso aos indicadores da empresa, mantendo a transparência das informações. As ferramentas de \textit{dashboard} tem o objetivo de facilitar a comunicação interna entre todos os profissionais, otimizando o tempo para tomarem decisões e evitarem trabalhos manuais e complexos com a organização de dados, passando a priorizar outras atividades mais relevantes. Com as informações consolidadas em um único painel, a gestão se torna mais ágil e efetiva, possibilitando o alinhamento de estratégias e decisões para o negócio \cite{Tecnicon}.
-
-\indent
 \par Como o \textit{dashboard} trabalha com atualizações constantes e análises mais específicas, é mais fácil prever problemas e tendências negativas que podem vir a acontecer. Estes problemas ficam mais explícitos com o uso da tecnologia de inteligência artificial que os identifica de maneira mais fácil.
-
 \par Qualquer mudança é detectada com mais simplicidade e o tempo para pensar nas possíveis soluções se torna muito maior. Isso melhora o processo de tomada de decisão e evita possíveis prejuízos \cite{Systemsat}.
-
-\indent
 \par Uma boa interface e uma boa experiência de uso se dá pela arquitetura das informação do \textit{dashboard}. É fundamental que seja organizado, coerente e intuitivo. O objetivo é tornar o mais fácil possível encontrar o que se procura. Através de menus, cores e  símbolos é possível saber quais são as opções e deixar claro as consequências que cada ação irá gerar. Dessa forma, a experiência do usuário ao usar o \textit{dashboard} será rápida e efetiva, atendendo suas expectativas \cite{Hostinger}.
 
 \section{Desenvolvimento \textit{web} com Django}
 
 \indent
 \par Django é um \textit{framework web} de alto nível, escrito em Python que encoraja o desenvolvimento rápido, limpo e pragmático de aplicações \textit{web} \cite{Django}. Com ele é possível que o desenvolvedor se preocupe mais com as regras de negócio do que com a programação em si, uma vez que ele já implementa tratamento de requisições, mapeamento objeto-relacional, preparação de respostas HTTP, sistema de autenticação, entre outros. Além disso, o Django foi desenvolvido com um foco extra em segurança, implementando camadas que evitam os ataques mais comuns conhecidos.
-\indent
 \par A arquitetura do Django se baseia no padrão MTV (\textit{Model-Template-View}) \cite{MTV}, que por sua vez é bem parecido com o padrão MVC (\textit{Model-View-Controller}) \cite{MVC}, mas possui suas peculiaridades. Primeiramente, a camada conhecida como \textit{Model} é a responsável pelo mapeamento do banco de dados para o projeto. A camada \textit{Template} é a responsável pelo \textit{layout} da página, ou seja, como os dados serão exibidos para o usuário. Por fim, na \textit{View} é onde o processamento dos dados irá ocorrer antes de serem exibidos e onde ficam localizadas as regras de negócio.
-\indent
 \par Devido a essa arquitetura utilizada por padrão no Django, cada projeto é subdividido em diversos aplicativos, que são criados conforme a necessidade do desenvolvedor, os quais implementam individualmente o modelo MTV. Isso permite que esses aplicativos se tornem partes independentes do sistema, aumentando a sua portabilidade para outros projetos e consequentemente, o reaproveitamento de código.
-\indent
 \par Assim sendo, um aplicativo Django criado por algum desenvolvedor pode ser facilmente transformado em um pacote Python e disponibilizadao no repositório de \textit{softwares} oficial do Python, o PyPI \cite{PYPI}. Isso permite que a comunidade reutilize um mesmo código que já foi desenvolvido para uma finalidade específica. Dois importantes pacotes utilizados neste projeto são o Django REST \textit{Framework} \cite{DjangoRF}, que permite a fácil criação de APIs integradas com os modelos do Django e o Django \textit{Plotly Dash} \cite{DjangoPD}, que implementa múltiplos estilos de gráficos e visualizações de dados escrevendo apenas código Python, que por sua vez podem ser facilmente incluídos em um template do Django.
 
 \section{Agendamento e execução de tarefas com Celery}
@@ -67,6 +55,13 @@
 \par O \textit{broker} se refere ao sistema de gerenciamento de filas responsável por gerenciar todo o sistema de envio de tarefas, seja de forma assíncrona ou não. Existem várias opções para escolha de \textit{broker} como RabbitMQ, Redis, Amazon SQS, Zookeeper. Dependendo do sistema operacional ou do local onde o projeto funcionará verifica-se a melhor opção. Neste projeto, como foi utilizado o sistema de nuvem da Amazon (AWS), foi escolhido o SQS, pois trata-se de um serviço oferecido pelo própria AWS.
 \indent 
 \par O \textit{worker} é quem executa de fato as tarefas agendadas e enviadas pela aplicação no \textit{broker}. É nele que todo o processamento de execução fica. Existem algumas opções de execução que podem ser configuradas dependendo da necessidade do projeto. Dentre elas estão \textit{prefork}, \textit{solo}, \textit{eventlet} e \textit{gevent}. Basicamente o \textit{prefork} e o \textit{solo} trabalham de forma síncrona e utiliza consideravelmente a CPU por travá-la enquanto a solicitação não termina até começar a próxima. Por outro lado, o \textit{eventlet} e o \textit{gevent} funcionam de forma assíncrona e são mais indicados para requisições HTTP pois levam em conta o tempo de resposta do servidor e não consomem a CPU \cite{CeleryEP}. 
+\begin{figure}[H]
+    \centering
+    \caption{Diagrama de funcionamento do Celery}
+    \includegraphics[width=1.0\linewidth]{Imagens/diagramaCelery.png}
+    \caption*{Fonte: Arquivo dos autores (2020)}
+    \label{DiagramaDeBlocosIcones}
+\end{figure}
 \indent 
 \par O \textit{beat} é um componente opcional que que dispara de tempos em tempos as tarefas para o \textit{broker}, como se fosse a aplicação. No projeto decidimos utilizá-lo pois é preciso que de tempos em tempos, de forma programada, uma tarefa seja executada de forma assíncrona \cite{CeleryTAP}.
 
@@ -91,7 +86,7 @@
 \indent
 \par Jeff Barr, atual vice presidente da AWS, anunciou em agosto de 2006 o lançamento da versão de testes do \textit{Elastic Compute Cloud} \cite{AWSEC2Beta}, que se tornaria o principal recurso dentro das opções oferecidas pela AWS. Inicialmente oferecendo um sistema com um processador Intel Xeon de 1,7 GHz, 1,75 GB de RAM, 160 GB de disco rígido e uma conexão de 260 Mb/s, tinha o custo de 10 centavos de dólar por hora, podendo executar distribuições de Linux, e já contava com um alto nível de escalabilidade, com o usuário tendo a possibilidade de executar quantos sistemas, chamados de "\textit{virtual CPU}", ele achasse necessário.
 \indent
-\par Hoje o EC2 suporta várias distribuições de Linux, incluindo Red Hat Enterprise, Ubuntu e a distribuição própria da Amazon, o Amazon Linux, Windows Server e Raspbian para seus servidores com plataforma ARM \cite{SuppSystems}. Além disso, também é possível escolher várias configurações de hardware em várias faixas de preço partindo de versões básicas, com apenas um núcleo e 1 GB de RAM, sem custo, até máquinas com múltiplos processadores físicos e múltiplas GPUs, que cobram mais de 10 dólares a hora, ficando a cargo do usuário escolher a opção que o melhor atende \cite{AWSINSTANCE}.
+\par Hoje o EC2 suporta várias distribuições de Linux, incluindo Red Hat Enterprise, Ubuntu e a distribuição própria da Amazon, o Amazon Linux, Windows Server e Raspbian para seus servidores com plataforma ARM \cite{awsSuppSystems}. Além disso, também é possível escolher várias configurações de hardware em várias faixas de preço partindo de versões básicas, com apenas um núcleo e 1 GB de RAM, sem custo, até máquinas com múltiplos processadores físicos e múltiplas GPUs, que cobram mais de 10 dólares a hora, ficando a cargo do usuário escolher a opção que o melhor atende \cite{AWSINSTANCE}.
 
 \subsubsection{Simple Queue Service}
 
@@ -104,7 +99,6 @@
 
 \indent
 \par O AWS \textit{Relational Database Service}, ou simplesmente RDS, é um serviço de banco de dados pré configurado, em que o usuário interage através de uma API em não tem o trabalho de configurar uma instância apenas para o seu banco de dados e também não precisa se preocupar com o uso de recursos da infraestrutura onde a sua aplicação principal está sendo executada, seja em uma instância EC2, um serviço como o AWS Lambda ou um servidor local \cite{AWSRDS_B}.
-\indent
 \par Lançado em 2009 com suporte apenas a MySQL, hoje o serviço pode executar vários tipos de banco de dados relacionais, como MariaDB, PostgreSQL e Oracle \cite{AWSRDS}. Por funcionar como uma abstração de uma instância EC2, o RDS oferece as mesmas vantagens, incluindo um alto nível de escalabilidade, o que permite que seja usado por grandes empresas como Netflix, Expedia e Unilever.
 
 \subsection{Google Cloud Platform}
@@ -123,13 +117,8 @@
 
 \indent
 \par Trazendo para os dias atuais, a Universidade de Villanova separa a análise de dados em três estágios. O primeiro deles seria o início do que chamamos de \textit{Business Intelligence}, que surgiu por volta de 1950 como uma forma de processar pequenas quantidades de informações estruturadas. Esse estágio, que podemos chamar de \textit{Analytics 1.0}, durou até cerca de 2009, quando foi consolidado o termo \textit{"big-data"}.
-
 \par O fim do primeiro estágio se deu pelo aumento exponencial de dados sendo produzidos diariamente, podendo vir de qualquer lugar e forma, desde de informações simples e estruturadas, como quais produtos alguém comprou em um determinado site, ou coisas mais complexas, como quais sites fizeram essa pessoa chegar até uma determinada página e qual a posição geográfica dessa pessoa quando acessou a página. Se convencionou a chamar esses dados em grande quantidade e pouco estruturados de \textit{"big-data"}.
-
-\indent
 \par Pela dificuldade de armazenar e processar essa massiva quantidade de dados, se fez necessário o desenvolvimento de novos métodos e ferramentas para o processamento deles, o que deu início ao \textit{Analytics 2.0}, que trouxe alternativas como Hadoop, que pode processar essas grandes massas de dados, e o NoSQL, que permite armazenar toda a informação de forma mais eficiente que os bancos de dados relacionais faziam até então. Além disso, cada vez mais se fez necessário um conhecimento tecnológico para fazer essas análises, quando até então bastava o conhecimento de métodos estatísticos.
-
-\indent
 \par Hoje em dia, muitos especialistas dizem que chegamos a um terceiro estágio, o \textit{Analytics 3.0}, onde esses dados que são produzidos a qualquer momento podem ser usados como moeda de troca entre consumidor e fornecedor. Essa moeda pode ser analisada imediatamente pelo fornecedor, que passa a entregar uma experiência personalizada para quem está consumindo o seu produto \cite{Villanova}.
 
 \subsection{Análise de dados no dia a dia}
